@@ -4,7 +4,7 @@ Este archivo es el componente Vue que se encarga de mostrar el chatbot en la int
 -->
 <template>
   <div :class="{'streamer-mode': isStreamerMode}" class="container-fluid d-flex background-image">
-    <iframe :src="iframeSrc" class="iframe"></iframe>
+    <img src="@/assets/left.jpg" class="iframe" alt="Left Image" />
     <div class="chatbot_card">
       <div class="card_header">
         <img src="../../src/assets/chatbot-icon.jpg" alt="Chatbot" class="chatbot_icon" />

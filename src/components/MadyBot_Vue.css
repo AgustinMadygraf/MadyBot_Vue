@@ -8,7 +8,8 @@ Estilos para el contenedor principal de la aplicación
 
 /* Estilos para el iframe y el chatbot */
 .iframe {
-  width: 15%;
+  width: 35%;
+  height: 100vh;
 }
 
 /* Nueva clase para el fondo */
@@ -25,7 +26,7 @@ Estilos para el contenedor principal de la aplicación
 }
 
 .chatbot_card {
-  width: 400px;
+  width: 65%;
   height: 100vh;
   display: flex;
   flex-direction: column;
