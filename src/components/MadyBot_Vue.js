@@ -1,29 +1,59 @@
-// Path: src/components/MadyBot_Vue.vue
-import MessageService from '../services/MessageService';
+/*
+Path: src/components/MadyBot_Vue.js
+Este archivo contiene la lógica de la aplicación de chat de MadyBot.
+*/
+
+import ChatService from '../services/ChatService';
 
 export default {
   data() {
     return {
       userMessage: '',
-      responseMessage: ''
+      messages: [],
+      lastSentMessage: ''
     };
   },
   methods: {
-    /**
-     * Sends a message using the MessageService and updates the responseMessage.
-     * Logs the process of sending the message.
-     */
-    async sendMessage() {
-      console.log("Iniciando proceso de envío de mensaje...");
-
+    async sendChatMessage() {
+      console.log("[INFO] Iniciando proceso de envío de mensaje...");
+      this.lastSentMessage = this.userMessage;
+      console.log("[INFO] Mensaje almacenado:", this.lastSentMessage);
+      const currentTime = new Date().toLocaleTimeString('es-ES', { hour12: false });
+      console.log("[INFO] Hora actual:", currentTime);
+      this.messages.push({ text: this.lastSentMessage, type: 'user', time: currentTime });
+      console.log("[INFO] Mensajes después de añadir el mensaje del usuario:", this.messages);
+      this.$nextTick(() => {
+        const messageContainer = this.$refs.messageContainer;
+        if (messageContainer) {
+          messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+      });
+      this.userMessage = '';
       try {
-        this.responseMessage = await MessageService.sendMessage(this.userMessage);
-        console.log("Mensaje enviado exitosamente:", this.responseMessage);
+        const responseMessage = await ChatService.sendUserMessage(this.lastSentMessage, currentTime);
+        this.messages.push({ text: responseMessage, type: 'bot', time: new Date().toLocaleTimeString('es-ES', { hour12: false }) });
+        console.log("[INFO] Mensajes después de añadir la respuesta del bot:", this.messages);
+        this.$forceUpdate();
+        this.$nextTick(() => {
+          const messageContainer = this.$refs.messageContainer;
+          if (messageContainer) {
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+          }
+        });
       } catch (error) {
-        this.responseMessage = error.message;
-        console.error("Error al enviar el mensaje:", error.message);
-      } finally {
-        console.log("Operación de envío de mensaje finalizada.");
+        console.error("[ERROR MadyBot_Vue] Error al enviar el mensaje:", error.message);
+        this.messages.push({
+          text: "Actualmente estamos experimentando problemas de conexión con el servidor. Por favor, intente nuevamente más tarde o contacte al soporte si el problema persiste.",
+          type: 'bot',
+          time: new Date().toLocaleTimeString('es-ES', { hour12: false })
+        });
+        this.$forceUpdate();
+        this.$nextTick(() => {
+          const messageContainer = this.$refs.messageContainer;
+          if (messageContainer) {
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+          }
+        });
       }
     }
   }
