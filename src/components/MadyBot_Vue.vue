@@ -1,25 +1,35 @@
+<!--
+Path: src/components/MadyBot_Vue.vue
+Este archivo es el componente Vue que se encarga de mostrar el chatbot en la interfaz de usuario.
+-->
 <template>
-    <div class="container">
-      <!-- Iframe de ejemplo -->
-      <iframe src="http://127.0.0.1:8000" class="iframe"></iframe>
-      
-      <!-- Chatbot -->
-      <div class="chatbot">
-        <h3>MadyBot</h3>
-        <input v-model="userMessage" placeholder="Escribe un mensaje" />
-        <button @click="sendMessage">Enviar</button>
-        
-        <div v-if="responseMessage">
-          <p><strong>MadyBotPy:</strong> {{ responseMessage }}</p>
+  <div :class="{'streamer-mode': isStreamerMode}" class="container-fluid d-flex background-image">
+    <iframe :src="iframeSrc" class="iframe"></iframe>
+    <div class="chatbot_card">
+      <div class="card_header">
+        <img src="../../src/assets/chatbot-icon.jpg" alt="Chatbot" class="chatbot_icon" />
+        <div>
+          <h3>MadyBot</h3>
+          <p class="status">en línea</p>
+        </div>
+      </div>
+      <div class="card_body" ref="messageContainer">
+        <div v-for="(message, index) in messages" :key="index" :class="{'message-received': message.type === 'bot', 'message-sent': message.type === 'user'}">
+          <div v-html="message.text"></div>
+          <div class="message-time">{{ message.time }}</div>
+        </div>
+      </div>
+      <div class="card_footer">
+        <div class="input-group mb-2">
+          <input v-model="userMessage" @keyup.enter="SendHandleMessage" placeholder="Mensaje" class="form-control" />
+          <button @click="SendHandleMessage" :disabled="!userMessage" class="btn btn-primary">Enviar</button>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  import MadyBot_VueScript from './MadyBot_Vue.js'; // Importa el script externo
-  import './MadyBot_Vue.css';  // Importa el archivo CSS
-  
-  export default MadyBot_VueScript;
-  </script>
-  
+  </div>
+</template>
+<script>
+import MadyBot_VueComponent from './MadyBot_VueComponent.js';
+export default MadyBot_VueComponent;
+</script>
+<style src="./MadyBot_Vue.css"></style>
