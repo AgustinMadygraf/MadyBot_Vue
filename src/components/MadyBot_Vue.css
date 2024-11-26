@@ -1,19 +1,142 @@
-/* Contenedor principal que ocupa el 100% de la altura */
-.container {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    height: 100%; /* Hace que ocupe toda la altura disponible */
-  }
-  
-  /* Estilos para el iframe y el chatbot */
-  .iframe {
-    width: 80%;
-    height: 98vh;
-    border: none;
-  }
-  .chatbot {
-    width: 20%;
-    height: 98vh;
-  }
-  
+/* 
+Path: src/components/MadyBot_Vue.css
+Estilos para el contenedor principal de la aplicación
+*/
+.container_main {
+  display: flex;
+}
+
+/* Estilos para el iframe y el chatbot */
+.iframe {
+  width: 15%;
+}
+
+/* Nueva clase para el fondo */
+.background-image {
+  background-image: url('@/assets/background.jpg');
+  margin: 0;
+  padding: 0;
+  background-size: contain;
+
+}
+
+.container-fluid.d-flex.background-image {
+  padding: 0;
+}
+
+.chatbot_card {
+  width: 400px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+}
+
+/* Estilos para el header del chatbot */
+.card_header {
+  height: 10vh;  
+  background-color: #171717;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding-top: 15px; 
+
+}
+
+.chatbot_icon {
+  width: 50px;
+  height: 50px; 
+  border-radius: 50%;
+  margin: 10px;
+  margin-right: 15px;
+  margin-top: 0px;
+}
+
+.card_body {
+  height: 85vh;
+  margin: 5px;
+  margin-left: 0px;
+  margin-right: 5px;
+  height: 78vh;
+  overflow-y: auto;
+}
+
+/* Estilos para los globos de mensajes */
+.message-received {
+  background-color  : #202E37;
+  border-radius     : 10px;
+  padding           : 10px;
+  margin            : 5px 0;
+  max-width         : 85%;
+  margin-right      : auto;
+  margin-left       : 15px;
+  color             : white;
+  position          : relative;
+}
+
+.message-sent {
+  background-color  : #275147;
+  border-radius     : 10px;
+  padding           : 10px;
+  margin            : 5px 0;
+  max-width         : 85%;
+  margin-right      : 15px;
+  margin-left       : auto;
+  color             : white;
+  position          : relative;
+}
+
+.message-received::before {
+  content     : "";
+  position    : absolute;
+  top         : 10px;
+  left        : -15px;
+  width       : 0;
+  height      : 0;
+  border-top  : 00px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left : 0px solid transparent;
+  border-right: 15px solid #202E37;
+}
+
+.message-sent::before {
+  content     : "";
+  position    : absolute;
+  top         : 10px;
+  right       : -10px;
+  width       : 0;
+  height      : 0;
+  border-top  : 0px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left : 15px solid #275147;
+  border-right: 0px solid transparent;
+
+}
+
+.message-time {
+  font-size: 0.75em;
+  color: #999;
+  text-align: right;
+  margin-top: 5px;
+}
+
+.card_footer {
+  height: 5vh;
+  padding-top: 3vh;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.status {
+  font-size: 0.8em;
+  color: #a0a0a0;
+  margin-top: -5px;
+}
+
+/* Estilo para el modo streamer */
+.streamer-mode {
+  background-color: #000;
+  color: #fff;
+  /* Otros estilos específicos para el modo streamer */
+}
