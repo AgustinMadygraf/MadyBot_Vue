@@ -57,6 +57,7 @@ export default {
   background-color: white; /* Asegúrate de que el fondo sea visible */
   padding: 5px; /* Añade algo de espacio alrededor del botón */
   border: 1px solid #ccc; /* Añade un borde para que sea más visible */
+  z-index: 1000; /* Asegúrate de que el menú esté por encima de otros elementos */
 }
 
 .menu-button {
