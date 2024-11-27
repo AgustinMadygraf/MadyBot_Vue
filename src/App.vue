@@ -14,6 +14,11 @@ Este es el componente principal de la aplicación. Aquí se importa el component
               Sistema de Gestión de Calidad
             </a>
           </li>
+          <li>
+            <a @click="menuAction('Manual de Operación')" href="/automatizacion/app/views/manualoperacion.php" target="_blank">
+              Manual de Operación
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -59,5 +64,23 @@ export default {
   border: none;
   font-size: 24px;
   cursor: pointer;
+}
+.menu {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menu li {
+  margin-bottom: 10px;
+}
+.menu li a {
+  text-decoration: none;
+  color: #333;
 }
 </style>
