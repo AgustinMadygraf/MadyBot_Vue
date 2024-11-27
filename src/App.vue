@@ -19,6 +19,11 @@ Este es el componente principal de la aplicación. Aquí se importa el component
               Manual de Operación
             </a>
           </li>
+          <li>
+            <a @click="menuAction('API Xubio')" href="https://main.xubio.com/API/documentation/index.html" target="_blank">
+              API Xubio
+            </a>
+          </li>
         </ul>
       </div>
     </div>
