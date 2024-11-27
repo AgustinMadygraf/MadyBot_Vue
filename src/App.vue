@@ -6,7 +6,16 @@ Este es el componente principal de la aplicación. Aquí se importa el component
 <template>
   <div id="app">
     <div class="menu-container">
-      <button class="menu-button">⋮</button>
+      <button @click="toggleMenu" class="menu-button">⋮</button>
+      <div v-if="isMenuOpen" class="menu">
+        <ul>
+          <li>
+            <a @click="menuAction('Sistema de Gestión de Calidad')" href="/iso-9001-comercializacion/dist/index.html" target="_blank">
+              Sistema de Gestión de Calidad
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
     <MadyBot_Vue />
   </div>
@@ -14,10 +23,23 @@ Este es el componente principal de la aplicación. Aquí se importa el component
 
 <script>
 import MadyBot_Vue from './components/MadyBot_Vue.vue';
-
 export default {
   components: {
     MadyBot_Vue
+  },
+  data() {
+    return {
+      isMenuOpen: false
+    };
+  },
+  methods: {
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
+    },
+    menuAction(action) {
+      console.log(`Selected: ${action}`);
+      this.isMenuOpen = false;
+    }
   }
 };
 </script>
