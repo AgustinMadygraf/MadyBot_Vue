@@ -5,6 +5,9 @@ Este es el componente principal de la aplicación. Aquí se importa el component
 
 <template>
   <div id="app">
+    <div class="menu-container">
+      <button class="menu-button">⋮</button>
+    </div>
     <MadyBot_Vue />
   </div>
 </template>
@@ -18,3 +21,21 @@ export default {
   }
 };
 </script>
+
+<style>
+.menu-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: white; /* Asegúrate de que el fondo sea visible */
+  padding: 5px; /* Añade algo de espacio alrededor del botón */
+  border: 1px solid #ccc; /* Añade un borde para que sea más visible */
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+</style>
