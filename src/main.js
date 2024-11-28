@@ -13,21 +13,16 @@ import App from './App.vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
-async function initApp() {
-  console.log('Iniciando la aplicación...');
-  try {
-    const isConnected = await checkBackendConnection();
-    console.log('Resultado de la verificación de conexión:', isConnected);
-    if (isConnected) {
-      console.log('Conexión con el backend exitosa. Iniciando la aplicación...');
-      createApp(App).mount('#app');
-    } else {
-      console.error('No se pudo conectar al backend. Por favor, verifique su conexión de red.');
-      // Aquí puedes mostrar un mensaje de error en la interfaz si lo deseas
-    }
-  } catch (error) {
-    console.error('Error durante la inicialización de la aplicación:', error);
-  }
-}
+const app = createApp(App);
 
-initApp();
+app.mount('#app');
+
+app.config.globalProperties.$nextTick(async () => {
+  console.log('Iniciando la verificación de conexión con el backend...');
+  const isConnected = await checkBackendConnection();
+  console.log('Resultado de la verificación de conexión:', isConnected);
+  if (!isConnected) {
+    console.error('No se pudo conectar al backend. Por favor, verifique su conexión de red.');
+    // Aquí puedes mostrar un mensaje de error en la interfaz si lo deseas
+  }
+});
