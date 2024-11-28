@@ -1,24 +1,27 @@
-// Path: vue.config.js
+/*
+Path: vue.config.js
+Este script de configuración de Vue CLI se utiliza para configurar el servidor de desarrollo 
+y la URL base de la aplicación.
+*/
+
 const { defineConfig } = require('@vue/cli-service');
 
 module.exports = defineConfig({
   transpileDependencies: true,
   publicPath: process.env.VUE_APP_BASE_URL || '/',
-  // Configuración del servidor de desarrollo
   devServer: {
-    host: 'localhost', // Cambia 'localhost' a la IP deseada si es necesario
-    port: 8080, // Puerto donde corre el servidor de desarrollo
-    hot: true, // Habilita la recarga en caliente (Hot Module Replacement)
-    liveReload: true, // Recarga la página al detectar cambios
+    host: process.env.VUE_APP_IP || '0.0.0.0',
+    port: process.env.VUE_APP_PORT || 8080,
+    hot: true,
+    liveReload: true,
     client: {
-      webSocketURL: 'ws://localhost:8080/ws', // URL del WebSocket para el cliente
+      webSocketURL: `ws://${process.env.VUE_APP_IP || 'localhost'}:${process.env.VUE_APP_PORT || 8080}/ws`,
     },
     proxy: {
-      // Redirecciona las solicitudes API para evitar problemas de CORS
       '/api': {
-        target: 'http://localhost:5000', // Cambia a la URL de tu servidor Flask
+        target: process.env.VUE_APP_URL_BACK || 'http://localhost:5000',
         changeOrigin: true,
-        pathRewrite: { '^/api': '' }, // Elimina el prefijo /api de la solicitud
+        pathRewrite: { '^/api': '' },
       },
     },
   },
