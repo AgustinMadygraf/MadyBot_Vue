@@ -10,6 +10,8 @@ se muestra un mensaje de error en la consola y la aplicación no se inicia.
 import { checkBackendConnection } from './utils/network';
 import { createApp } from 'vue';
 import App from './App.vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 async function initApp() {
   console.log('Iniciando la aplicación...');
