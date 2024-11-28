@@ -3,13 +3,13 @@
 export async function checkBackendConnection() {
     console.log('Iniciando verificación de conexión con el backend...');
     try {
-      const url = 'http://192.168.0.125:5000/receive-data';
+      const url = process.env.VUE_APP_URL_BACK + '/receive-data';
       console.log('URL del backend:', url);
       const response = await fetch(url, {
         method: 'POST',
         mode: 'cors',
         headers: {
-          'Content-Type': 'application/json' // Add this line
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             prompt_user: "Hello, MadyBotPy!",
@@ -24,7 +24,7 @@ export async function checkBackendConnection() {
             },
             stream: false
           })
-                });
+      });
       console.log('Respuesta recibida del backend:', response);
       return response.ok;
     } catch (error) {

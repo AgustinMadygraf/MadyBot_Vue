@@ -9,10 +9,8 @@ import './MadyBot_Vue.css';
 export default {
   data() {
     const scriptData = MadyBot_VueScript.data();
-    console.log("URL_FRAME: " + process.env.VUE_APP_URL_FRAME);
     return {
       ...scriptData,
-      iframeSrc: process.env.VUE_APP_URL_FRAME,
       messages: [],
       isStreamerMode: process.env.VUE_APP_STREAM === 'true'
     };
