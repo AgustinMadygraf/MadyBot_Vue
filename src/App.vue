@@ -5,6 +5,7 @@ Este es el componente principal de la aplicación. Aquí se importa el component
 
 <template>
   <div id="app">
+    <NetworkCheck />
     <div class="menu-container">
       <button @click="toggleMenu" class="menu-button">⋮</button>
       <div v-if="isMenuOpen" class="menu">
@@ -33,9 +34,12 @@ Este es el componente principal de la aplicación. Aquí se importa el component
 
 <script>
 import MadyBot_Vue from './components/MadyBot_Vue.vue';
+import NetworkCheck from './components/NetworkCheck.vue';
+
 export default {
   components: {
-    MadyBot_Vue
+    MadyBot_Vue,
+    NetworkCheck
   },
   data() {
     return {
@@ -71,20 +75,24 @@ export default {
   font-size: 24px;
   cursor: pointer;
 }
+
 .menu {
   background: white;
   border: 1px solid #ccc;
   padding: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
 .menu ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
 .menu li {
   margin-bottom: 10px;
 }
+
 .menu li a {
   text-decoration: none;
   color: #333;
