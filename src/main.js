@@ -10,6 +10,7 @@ se muestra un mensaje de error en la consola y la aplicación no se inicia.
 import { checkBackendConnection } from './utils/network';
 import { createApp } from 'vue';
 import App from './App.vue';
+import { nextTick } from 'vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
@@ -17,7 +18,7 @@ const app = createApp(App);
 
 app.mount('#app');
 
-app.config.globalProperties.$nextTick(async () => {
+nextTick(async () => {
   console.log('Iniciando la verificación de conexión con el backend...');
   const isConnected = await checkBackendConnection();
   console.log('Resultado de la verificación de conexión:', isConnected);

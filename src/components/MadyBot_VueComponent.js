@@ -5,6 +5,7 @@ Este archivo contiene la lógica de la aplicación de chat de MadyBot.
 
 import MadyBot_VueScript from './MadyBot_Vue.js';
 import './MadyBot_Vue.css';
+import MessageService from '../services/MessageService';
 
 export default {
   data() {
@@ -22,12 +23,12 @@ export default {
       await MadyBot_VueScript.methods.sendChatMessage.call(this);
     }
   },
-  created() {
-    // Añade un mensaje de bienvenida cuando el componente se crea
-    this.messages.push({
-      text: '¡Bienvenido al chat de MadyBot!',
-      type: 'bot',
-      time: new Date().toLocaleTimeString('es-ES', { hour12: false }) // Formato de 24 horas
-    });
+  async created() {
+    try {
+      const welcomeMessage = await MessageService.sendBotMessage("Hola!");
+      this.messages.push({ text: welcomeMessage, type: 'bot', time: new Date().toLocaleTimeString('es-ES', { hour12: false }) });
+    } catch (error) {
+      console.error("[ERROR MadyBot_VueComponent] Error al enviar el mensaje de bienvenida:", error.message);
+    }
   }
 };
