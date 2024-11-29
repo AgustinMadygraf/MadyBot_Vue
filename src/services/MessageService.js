@@ -3,19 +3,12 @@ Path: src/services/MessageService.js
 El servicio MessageService se encarga de enviar mensajes al servicio ApiService.
 */
 
-import { v4 as uuidv4 } from 'uuid';
 import ApiService from './ApiService';
-import BrowserDataService from '@/services/BrowserDataService';
-
-const browserData = BrowserDataService.getBrowserData();
-console.log("[INFO] Browser Data:", browserData);
+import IdGenerationService from './IdGenerationService';
 
 class MessageService {
   constructor() {
-    this.userId = {
-      id: uuidv4(),
-      browserData: browserData
-    };
+    this.userId = IdGenerationService.generateUserId();
   }
 
   async sendBotMessage(userMessage) {
