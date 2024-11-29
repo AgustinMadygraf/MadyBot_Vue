@@ -12,7 +12,7 @@ export async function checkBackendConnection() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          prompt_user: "Hello, MadyBotPy!",
+          prompt_user: "Probando conexión con el backend",
           user_data: {
             id: "12345",
             browserData: {

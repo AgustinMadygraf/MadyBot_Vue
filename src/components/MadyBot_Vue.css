@@ -7,11 +7,11 @@ Estilos para el contenedor principal de la aplicación
 }
 
 /* Estilos para el iframe y el chatbot */
-.iframe {
-  width: 35%;
-  height: 100vh;
+@media (max-width: 768px) {
+  .iframe {
+    display: none;
+  }
 }
-
 /* Nueva clase para el fondo */
 .background-image {
   background-image: url('@/assets/background.jpg');
@@ -26,7 +26,7 @@ Estilos para el contenedor principal de la aplicación
 }
 
 .chatbot_card {
-  width: 65%;
+  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -140,4 +140,50 @@ Estilos para el contenedor principal de la aplicación
   background-color: #000;
   color: #fff;
   /* Otros estilos específicos para el modo streamer */
+}
+
+.menu-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: white; /* Asegúrate de que el fondo sea visible */
+  padding: 5px; /* Añade algo de espacio alrededor del botón */
+  border: 1px solid #ccc; /* Añade un borde para que sea más visible */
+  z-index: 1000; /* Asegúrate de que el menú esté por encima de otros elementos */
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.menu {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu li {
+  margin-bottom: 10px;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.network-error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
 }

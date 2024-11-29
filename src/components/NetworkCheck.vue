@@ -24,12 +24,3 @@ Si no hay conexión, se muestra un mensaje de error.
     }
   };
   </script>
-  
-  <style scoped>
-  .network-error {
-    color: red;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 20px;
-  }
-  </style>
