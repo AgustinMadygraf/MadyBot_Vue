@@ -5,9 +5,7 @@ Si no hay conexión, se muestra un mensaje de error.
 -->
 
 <template>
-    <div v-if="!isConnected" class="network-error">
-      <p>No está conectado a la red permitida. Por favor, conéctese a la red correcta para acceder a la aplicación.</p>
-    </div>
+    <div v-if="!isConnected" class="network-error"></div>
   </template>
   
   <script>
