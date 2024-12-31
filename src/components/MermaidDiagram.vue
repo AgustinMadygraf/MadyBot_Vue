@@ -1,9 +1,11 @@
 <template>
     <div id="mermaid">
-      graph TD;
-      App --> NavBar;
-      App --> MadyBot_Vue;
-      App --> NetworkCheck;
+    graph TD;
+    App[App.vue] --> NetworkCheck[NetworkCheck.vue];
+    App --> NavBar[NavBar.vue];
+    App --> MenuTabs[MenuTabs.vue];
+    MenuTabs --> MadyBot[MadyBot_Vue.vue];
+    MenuTabs --> MermaidDiagram[MermaidDiagram.vue];
     </div>
   </template>
   
