@@ -8,8 +8,8 @@ import { createApp, nextTick } from 'vue';
 import App from './App.vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-import mermaid from 'mermaid';
 import { NetworkService } from './JS/NetworkCheck';
+import mermaid from 'mermaid';
 
 // Inicializar Mermaid con configuración personalizada
 const initializeMermaid = () => {

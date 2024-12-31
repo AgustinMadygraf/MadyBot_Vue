@@ -12,7 +12,7 @@ export default {
     return {
       ...scriptData,
       messages: [],
-      isStreamerMode: process.env.VUE_APP_STREAM === 'true'
+      isStreamerMode: process.env.VUE_APP_STREAM === 'false'
     };
   },
   methods: {

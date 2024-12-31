@@ -1,4 +1,4 @@
-// src/NetworkCheck/network.js
+// src/JS/NetworkCheck/index.js
 
 import MessageService from '../ChatBot/MessageService';
 
