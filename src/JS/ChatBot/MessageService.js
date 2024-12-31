@@ -5,6 +5,7 @@ El servicio MessageService se encarga de enviar mensajes al servicio ApiService.
 
 import ApiService from '../NetworkCheck/ApiService';
 import IdGenerationService from '../NetworkCheck/IdGenerationService';
+import AppConfig from '../../config';
 
 class MessageService {
   constructor(apiService, idService, options = {}) {
@@ -13,8 +14,10 @@ class MessageService {
     this.userId = this.idService.generateUserId();
     this.defaultOptions = {
       stream: process.env.VUE_APP_STREAM === 'true',
+      stream2: AppConfig.STREAM_ENABLED,
       ...options,
     };
+  console.log('[DEBUG] Valor API_ENDPOINT desde config.json:', AppConfig.API_ENDPOINT);
   }
 
   async sendBotMessage(userMessage, options = {}) {
