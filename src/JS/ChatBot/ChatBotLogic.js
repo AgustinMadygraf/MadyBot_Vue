@@ -4,7 +4,7 @@ Este archivo contiene la lógica de la aplicación de chat de MadyBot.
 */
 
 import ChatService from './ChatService.js';
-import emitter from './eventBus.js'; // Ajustar la ruta según tu proyecto
+import emitter from './eventBus.js';
 
 export default {
   data() {

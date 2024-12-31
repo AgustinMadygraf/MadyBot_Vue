@@ -1,3 +1,8 @@
+<!--
+Path: src/components/ChatBot.vue
+Este componente es el encargado de mostrar el chatbot en la interfaz de usuario.
+-->
+
 <template>
   <div :class="{'streamer-mode': isStreamerMode}" class="container-fluid d-flex background-image">
     <img src="@/assets/left.jpg" class="iframe" alt="Left Image" />
