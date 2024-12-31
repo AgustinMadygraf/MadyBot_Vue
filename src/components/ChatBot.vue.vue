@@ -29,7 +29,7 @@ Este archivo es el componente Vue que se encarga de mostrar el chatbot en la int
   </div>
 </template>
 <script>
-import MadyBot_VueComponent from '../JS/ChatBot/ChatBotComponentLogic.js';
-export default MadyBot_VueComponent;
+import ChatBotComponent from '../JS/ChatBot/ChatBotComponentLogic.js';
+export default ChatBotComponent;
 </script>
 <style src="../assets/style.css"></style>

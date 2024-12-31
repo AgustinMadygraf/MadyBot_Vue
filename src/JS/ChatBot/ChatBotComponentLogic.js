@@ -3,12 +3,12 @@ Path: src/JS/ChatBot/ChatBotComponentLogic.js
 Este archivo contiene la lógica de la aplicación de chat de MadyBot.
 */
 
-import MadyBot_VueScript from '../../components/ChatBotLogic.js';
+import ChatBotLogicScript from '../../components/ChatBotLogic.js';
 import MessageService from '../NetworkCheck/MessageService.js';
 
 export default {
   data() {
-    const scriptData = MadyBot_VueScript.data();
+    const scriptData = ChatBotLogicScript.data();
     return {
       ...scriptData,
       messages: [],
@@ -16,10 +16,10 @@ export default {
     };
   },
   methods: {
-    ...MadyBot_VueScript.methods,
+    ...ChatBotLogicScript.methods,
     async SendHandleMessage() {
-      console.log('Sending message from MadyBot_VueComponent:', this.userMessage);
-      await MadyBot_VueScript.methods.sendChatMessage.call(this);
+      console.log('Sending message from ChatBotComponent:', this.userMessage);
+      await ChatBotLogicScript.methods.sendChatMessage.call(this);
     }
   },
   async created() {
@@ -27,7 +27,7 @@ export default {
       const welcomeMessage = await MessageService.sendBotMessage("Hola!");
       this.messages.push({ text: welcomeMessage, type: 'bot', time: new Date().toLocaleTimeString('es-ES', { hour12: false }) });
     } catch (error) {
-      console.error("[ERROR MadyBot_VueComponent] Error al enviar el mensaje de bienvenida:", error.message);
+      console.error("[ERROR ChatBotComponent] Error al enviar el mensaje de bienvenida:", error.message);
     }
   }
 };
