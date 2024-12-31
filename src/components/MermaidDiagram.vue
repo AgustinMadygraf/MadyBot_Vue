@@ -17,50 +17,13 @@ Este componente renderiza un diagrama Mermaid en la aplicación con mejor manejo
   </template>
   
   <script>
-  import mermaid from 'mermaid';
+  import { useMermaid } from '../hooks/useMermaid';
   
   export default {
-    methods: {
-      initMermaid() {
-        console.log("Inicializando Mermaid...");
-        const mermaidContainer = document.getElementById('mermaid');
-        if (!mermaidContainer) {
-          console.error("El contenedor de Mermaid no se encontró.");
-          return;
-        }
-  
-        try {
-          // Configurar Mermaid
-          mermaid.initialize({
-            startOnLoad: false,
-            securityLevel: 'loose', // Permitir HTML
-            theme: 'default', // Tema predeterminado
-            logLevel: 5, // Nivel de depuración
-          });
-  
-          console.log(`Versión de Mermaid: ${mermaid.version || 'indefinida'}`);
-  
-          // Renderizar Mermaid
-          mermaid.init(undefined, mermaidContainer);
-  
-          console.log("Mermaid se ha renderizado correctamente.");
-        } catch (error) {
-          console.error("Error al renderizar Mermaid:", error);
-        }
-      },
-    },
     mounted() {
-      this.initMermaid();
+      const { initMermaid } = useMermaid();
+      initMermaid('mermaid'); // Inicializar Mermaid en el contenedor con ID 'mermaid'
     },
   };
   </script>
-  
-  <style scoped>
-  #mermaid {
-    border: 1px solid #ccc;
-    padding: 10px;
-    background-color: #f9f9f9;
-    overflow-x: auto;
-  }
-  </style>
   

@@ -194,3 +194,10 @@ Estilos para el contenedor principal de la aplicación
   margin-top: 1rem;
   background-color: #f9f9f9;
 }
+
+#mermaid {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  overflow-x: auto;
+}
