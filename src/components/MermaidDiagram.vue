@@ -16,7 +16,7 @@ Este componente renderiza un diagrama Mermaid en la aplicación con mejor manejo
     App[App.vue] --> NetworkCheck[NetworkCheck.vue];
     App --> NavBar[NavBar.vue];
     App --> MenuTabs[MenuTabs.vue];
-    MenuTabs --> MadyBot[MadyBot_Vue.vue];
+    MenuTabs --> MadyBot[ChatBot.vue];
     MenuTabs --> MermaidDiagram[MermaidDiagram.vue];
 
     %% Servicios

@@ -3,7 +3,7 @@
    - **Detalle de la tarea**: Separar la generación de IDs de usuario y la lógica de envío de mensajes en clases diferentes.
 
 2. **Inyectar dependencias en `MadyBot_Vue`**
-   - **Archivo a modificar**: `MadyBot_Vue.js`
+   - **Archivo a modificar**: `ChatBotLogic.js`
    - **Detalle de la tarea**: Inyectar dependencias como `ChatService` y `MessageService` en lugar de instanciarlas directamente.
 
 3. **Permitir la inyección de estrategias en `ApiService`**

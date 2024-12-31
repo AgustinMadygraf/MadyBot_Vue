@@ -1,5 +1,5 @@
 /*
-Path: src/components/MadyBot_Vue.js
+Path: src/components/ChatBotLogic.js
 Este archivo contiene la lógica de la aplicación de chat de MadyBot.
 */
 

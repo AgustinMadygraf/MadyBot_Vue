@@ -1,5 +1,5 @@
 <!--
-Path: src/components/MadyBot_Vue.vue
+Path: src/components/ChatBot.vue
 Este archivo es el componente Vue que se encarga de mostrar el chatbot en la interfaz de usuario.
 -->
 <template>
