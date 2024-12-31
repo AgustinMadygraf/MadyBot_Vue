@@ -12,11 +12,37 @@ Este componente renderiza un diagrama Mermaid en la aplicación con mejor manejo
     </p>
       <div id="mermaid">
         graph TD;
-            App[App.vue] --> NetworkCheck[NetworkCheck.vue];
-            App --> NavBar[NavBar.vue];
-            App --> MenuTabs[MenuTabs.vue];
-            MenuTabs --> MadyBot[MadyBot_Vue.vue];
-            MenuTabs --> MermaidDiagram[MermaidDiagram.vue];
+    %% Componentes principales
+    App[App.vue] --> NetworkCheck[NetworkCheck.vue];
+    App --> NavBar[NavBar.vue];
+    App --> MenuTabs[MenuTabs.vue];
+    MenuTabs --> MadyBot[MadyBot_Vue.vue];
+    MenuTabs --> MermaidDiagram[MermaidDiagram.vue];
+
+    %% Servicios
+    MadyBot --> ApiService[ApiService.js];
+    ApiService --> MarkdownService[MarkdownService.js];
+    ApiService --> IdGenerationService[IdGenerationService.js];
+    IdGenerationService --> BrowserDataService[BrowserDataService.js];
+    NetworkCheck --> NetworkService[NetworkService.js];
+
+    %% Relaciones internas
+    MarkdownService --> marked[marked (Librería)];
+    NetworkService --> MessageService[MessageService.js];
+    MessageService --> ApiService;
+    MessageService --> IdGenerationService;
+
+    %% Notas adicionales
+    subgraph ExternalLibraries
+        marked
+        axios[axios]
+        uuid[uuid]
+    end
+
+    %% Conexiones con librerías externas
+    ApiService --> axios;
+    IdGenerationService --> uuid;
+
     </div>
     </div>
   </template>
