@@ -6,6 +6,18 @@ Este es el componente principal de la aplicación. Aquí se importa el component
 <template>
   <div id="app">
     <NetworkCheck />
+    <NavBar @dev-mode-changed="setDevMode" />
+    <div v-if="isDevMode" class="dev-container">
+      <h2>Diagrama de Componentes</h2>
+      <div id="mermaid">
+        <mermaid>
+          graph TD;
+          App --> NavBar;
+          App --> MadyBot_Vue;
+          App --> NetworkCheck;
+        </mermaid>
+      </div>
+    </div>
     <div class="menu-container">
       <button @click="toggleMenu" class="menu-button">⋮</button>
       <div v-if="isMenuOpen" class="menu">
@@ -35,15 +47,18 @@ Este es el componente principal de la aplicación. Aquí se importa el component
 <script>
 import MadyBot_Vue from './components/MadyBot_Vue.vue';
 import NetworkCheck from './components/NetworkCheck.vue';
+import NavBar from './components/NavBar.vue';
 
 export default {
   components: {
     MadyBot_Vue,
-    NetworkCheck
+    NetworkCheck,
+    NavBar
   },
   data() {
     return {
-      isMenuOpen: false
+      isMenuOpen: false,
+      isDevMode: false
     };
   },
   methods: {
@@ -53,8 +68,19 @@ export default {
     menuAction(action) {
       console.log(`Selected: ${action}`);
       this.isMenuOpen = false;
+    },
+    setDevMode(devMode) {
+      this.isDevMode = devMode;
     }
   }
 };
 </script>
 
+<style>
+.dev-container {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  margin-top: 1rem;
+  background-color: #f9f9f9;
+}
+</style>

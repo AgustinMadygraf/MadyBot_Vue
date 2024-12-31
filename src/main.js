@@ -13,6 +13,13 @@ import App from './App.vue';
 import { nextTick } from 'vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import mermaid from 'mermaid';
+
+// Inicializar Mermaid
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'default',
+});
 
 const app = createApp(App);
 
