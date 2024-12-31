@@ -1,36 +1,57 @@
 /*
 Path: src/main.js
 Este script es el punto de entrada de la aplicación.
-Aquí se importa la función checkBackendConnection del archivo src/utils/network.js 
-y se llama a esta función para verificar la conexión con el backend antes de iniciar la aplicación. 
-Si la conexión es exitosa, la aplicación se inicia normalmente. Si la conexión falla, 
-se muestra un mensaje de error en la consola y la aplicación no se inicia.
+Aquí inicializamos Mermaid y verificamos la conexión con el backend.
 */
 
 import { checkBackendConnection } from './utils/network';
-import { createApp } from 'vue';
+import { createApp, nextTick } from 'vue';
 import App from './App.vue';
-import { nextTick } from 'vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import mermaid from 'mermaid';
 
-// Inicializar Mermaid
-mermaid.initialize({
-  startOnLoad: true,
-  theme: 'default',
-});
+// Inicializar Mermaid con configuración personalizada
+const initializeMermaid = () => {
+  console.log('Inicializando Mermaid...');
+  try {
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'default',
+    });
 
+    const mermaidContainer = document.getElementById('mermaid');
+    if (!mermaidContainer) {
+      console.error('El contenedor de Mermaid no se encontró.');
+      return;
+    }
+
+    mermaid.init(undefined, mermaidContainer);
+    console.log('Mermaid se ha renderizado correctamente.');
+  } catch (error) {
+    console.error('Error al inicializar Mermaid:', error);
+  }
+};
+
+// Crear la aplicación de Vue
 const app = createApp(App);
 
-app.mount('#app');
-
+// Verificar la conexión con el backend
 nextTick(async () => {
   console.log('Iniciando la verificación de conexión con el backend...');
   const isConnected = await checkBackendConnection();
   console.log('Resultado de la verificación de conexión:', isConnected);
+
   if (!isConnected) {
     console.error('No se pudo conectar al backend. Por favor, verifique su conexión de red.');
-    // Aquí puedes mostrar un mensaje de error en la interfaz si lo deseas
+    // Aquí puedes manejar un mensaje de error en la UI si lo deseas
+  } else {
+    console.log('Conexión con el backend exitosa.');
   }
+
+  // Inicializar Mermaid después de verificar la conexión
+  initializeMermaid();
 });
+
+// Montar la aplicación
+app.mount('#app');

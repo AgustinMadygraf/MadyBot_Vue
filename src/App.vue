@@ -1,23 +1,7 @@
-<!--
-Path: src/App.vue
-Este es el componente principal de la aplicación. Aquí se importa el componente MadyBot_Vue y se muestra en la plantilla.
--->
-
 <template>
   <div id="app">
     <NetworkCheck />
-    <NavBar @dev-mode-changed="setDevMode" />
-    <div v-if="isDevMode" class="dev-container">
-      <h2>Diagrama de Componentes</h2>
-      <div id="mermaid">
-        <mermaid>
-          graph TD;
-          App --> NavBar;
-          App --> MadyBot_Vue;
-          App --> NetworkCheck;
-        </mermaid>
-      </div>
-    </div>
+    <NavBar />
     <div class="menu-container">
       <button @click="toggleMenu" class="menu-button">⋮</button>
       <div v-if="isMenuOpen" class="menu">
@@ -40,7 +24,20 @@ Este es el componente principal de la aplicación. Aquí se importa el component
         </ul>
       </div>
     </div>
-    <MadyBot_Vue />
+    <div v-if="currentTab === 'inicio'">
+      <MadyBot_Vue />
+    </div>
+    <div v-if="currentTab === 'dev'" class="dev-container">
+      <h2>Diagrama de Componentes</h2>
+      <div id="mermaid">
+        <mermaid>
+          graph TD;
+          App --> NavBar;
+          App --> MadyBot_Vue;
+          App --> NetworkCheck;
+        </mermaid>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -48,6 +45,7 @@ Este es el componente principal de la aplicación. Aquí se importa el component
 import MadyBot_Vue from './components/MadyBot_Vue.vue';
 import NetworkCheck from './components/NetworkCheck.vue';
 import NavBar from './components/NavBar.vue';
+import mermaid from 'mermaid';
 
 export default {
   components: {
@@ -58,7 +56,7 @@ export default {
   data() {
     return {
       isMenuOpen: false,
-      isDevMode: false
+      currentTab: 'inicio'
     };
   },
   methods: {
@@ -69,18 +67,45 @@ export default {
       console.log(`Selected: ${action}`);
       this.isMenuOpen = false;
     },
-    setDevMode(devMode) {
-      this.isDevMode = devMode;
+    onHashChange() {
+      const hash = window.location.hash.replace('#', '');
+      this.currentTab = hash || 'inicio';
+    },
+    initMermaid() {
+      console.log("Inicializando Mermaid...");
+
+      const mermaidContainer = document.getElementById('mermaid');
+      if (!mermaidContainer) {
+        console.error("El contenedor de Mermaid no se encontró.");
+        return;
+      }
+
+      try {
+        mermaid.initialize({ startOnLoad: false });
+        mermaid.init(undefined, mermaidContainer);
+        console.log("Mermaid se ha renderizado correctamente.");
+      } catch (error) {
+        console.error("Error al renderizar Mermaid:", error);
+      }
     }
+  },
+  mounted() {
+    window.addEventListener('hashchange', this.onHashChange);
+    this.onHashChange();
+
+    if (this.currentTab === 'dev') {
+      this.initMermaid();
+    }
+  },
+  watch: {
+    currentTab(newTab) {
+      if (newTab === 'dev') {
+        this.initMermaid();
+      }
+    }
+  },
+  beforeUnmount() {
+    window.removeEventListener('hashchange', this.onHashChange);
   }
 };
 </script>
-
-<style>
-.dev-container {
-  padding: 1rem;
-  border: 1px solid #ccc;
-  margin-top: 1rem;
-  background-color: #f9f9f9;
-}
-</style>

@@ -3,29 +3,17 @@
     <nav class="navbar">
       <div class="navbar-container">
         <h1>Project Name</h1>
-        <div>
-          <button @click="toggleDevMode" class="navbar-button">
-            {{ isDevMode ? 'Salir del Modo Dev' : 'Activar Modo Dev' }}
-          </button>
-        </div>
+        <ul class="navbar-menu">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#dev">Dev</a></li>
+        </ul>
       </div>
     </nav>
   </template>
   
   <script>
   export default {
-    name: 'NavBar',
-    data() {
-      return {
-        isDevMode: false
-      };
-    },
-    methods: {
-      toggleDevMode() {
-        this.isDevMode = !this.isDevMode;
-        this.$emit('dev-mode-changed', this.isDevMode);
-      }
-    }
+    name: 'NavBar'
   };
   </script>
   
@@ -38,16 +26,16 @@
     background-color: #007bff;
     color: white;
   }
-  .navbar-button {
-    background-color: white;
-    color: #007bff;
-    padding: 0.5rem 1rem;
-    border: none;
-    cursor: pointer;
+  .navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
   }
-  .navbar-button:hover {
-    background-color: #0056b3;
+  .navbar-menu li {
+    display: inline;
+  }
+  .navbar-menu a {
     color: white;
+    text-decoration: none;
   }
   </style>
-  

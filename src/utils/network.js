@@ -37,6 +37,6 @@ export async function checkBackendConnection() {
         return response.ok;
     } catch (error) {
         console.error('Error durante la verificación de conexión:', error);
-        return false;
+        return { error: true, message: error.message };
     }
 }
