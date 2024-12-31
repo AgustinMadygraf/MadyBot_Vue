@@ -1,4 +1,3 @@
----
 
 ## 4. Implementar un patrón de notificación o eventos
 **Archivos involucrados:**  

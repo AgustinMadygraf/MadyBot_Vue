@@ -1,14 +1,13 @@
-<!--
-Path: src/components/ChatBot.vue
-Este archivo es el componente Vue que se encarga de mostrar el chatbot en la interfaz de usuario.
--->
-
 <template>
   <div :class="{'streamer-mode': isStreamerMode}" class="container-fluid d-flex background-image">
     <img src="@/assets/left.jpg" class="iframe" alt="Left Image" />
     <div class="chatbot_card">
       <div class="card_header">
-        <img src="../../src/assets/chatbot-icon.jpg" alt="Chatbot" class="chatbot_icon" />
+        <img
+          src="../../src/assets/chatbot-icon.jpg"
+          alt="Chatbot"
+          class="chatbot_icon"
+        />
         <div>
           <h3>MadyBot</h3>
           <p class="status">en línea</p>
@@ -49,29 +48,55 @@ Este archivo es el componente Vue que se encarga de mostrar el chatbot en la int
 </template>
 
 <script>
+/* 
+  Importamos el componente base que ya integra la lógica de ChatBotLogic.js.
+  Ajusta la ruta según la estructura de tu proyecto.
+*/
 import ChatBotComponent from '../JS/ChatBot/index.js';
 
+/*
+  Importamos nuestro Event Bus basado en mitt.
+  Ajusta la ruta a donde creaste tu `eventBus.js`.
+*/
+import emitter from '../JS/ChatBot/eventBus.js';
+
 export default {
-  // Extiende el objeto exportado por ChatBotComponent,
-  // que a su vez incluye ChatBotLogic.js
   extends: ChatBotComponent,
+
+  created() {
+    /*
+      Reemplazamos this.$on() por emitter.on().
+      Aquí escuchamos eventos emitidos desde ChatBotLogic.js.
+    */
+    emitter.on('messageSent', () => {
+      this.scrollToBottom();
+    });
+
+    emitter.on('errorOccurred', (errorMsg) => {
+      console.error("Error en ChatBot:", errorMsg);
+      // Si quieres mostrar el error en pantalla, podrías
+      // setear una variable local y usarla en el template o un alert.
+      this.scrollToBottom();
+    });
+  },
 
   methods: {
     async SendHandleMessage() {
       /*
-        Llamamos al método de negocio `sendChatMessage`.
-        Este método no manejará el scroll ni la referencia a `messageContainer`,
-        sino que se limita a la lógica de envío y recepción.
+        Llamamos al método de negocio `sendChatMessage()`.
+        Como la lógica de negocio emitirá eventos en caso de éxito o error,
+        no es necesario forzar la UI aquí, pero podrías hacer un scroll 
+        inmediato si así lo deseas.
       */
       await this.sendChatMessage();
-      /*
-        Luego de enviar el mensaje, si deseamos forzar
-        la posición del scroll, llamamos a nuestro método local.
-      */
-      this.scrollToBottom();
+      // Por ejemplo, si deseas forzar el scroll cada vez que envíes el mensaje:
+      // this.scrollToBottom();
     },
 
-    // Método para desplazar el scroll hasta el final
+    /*
+      Método que se encarga de desplazar el scroll hasta el final del contenedor
+      cuando sea necesario. Sólo pertenece a la UI, no a la lógica de negocio.
+    */
     scrollToBottom() {
       const container = this.$refs.messageContainer;
       if (container) {
@@ -82,9 +107,9 @@ export default {
 
   watch: {
     /*
-      Cada vez que cambie la lista de mensajes,
-      forzamos el scroll al final del contenedor.
-      Así evitamos la necesidad de usar this.$refs en ChatBotLogic.js.
+      Cada vez que cambie la lista de mensajes, nos aseguramos de que el
+      scroll muestre el último mensaje. Esto es opcional, 
+      dependiendo de tu preferencia.
     */
     messages() {
       this.$nextTick(() => {
