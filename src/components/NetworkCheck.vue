@@ -11,7 +11,7 @@ Si no hay conexión, se muestra un mensaje de error.
 </template>
 
 <script>
-import { NetworkService } from '../utils/network.js';
+import { NetworkService } from '../NetworkCheck/index.js';
 
 export default {
   data() {

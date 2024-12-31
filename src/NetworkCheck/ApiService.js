@@ -4,7 +4,7 @@ El servicio ApiService se encarga de enviar mensajes a la API de MadyBot.
 */
 
 import axios from 'axios';
-import MarkdownService from './MarkdownService';
+import MarkdownService from '../services/MarkdownService';
 
 class ApiService {
   constructor(baseUrl) {

@@ -1,6 +1,6 @@
-// src/utils/network.js
+// src/NetworkCheck/network.js
 
-import MessageService from '../services/MessageService';
+import MessageService from './MessageService';
 
 export class NetworkService {
   constructor(baseUrl) {
