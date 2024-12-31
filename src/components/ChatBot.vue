@@ -1,7 +1,8 @@
 <!--
-Path: src/components/MadyBot_Vue.vue
-Este archivo es el componente Vue que se encarga de mostrar el chatbot en la interfaz de usuario.
+Path: src/components/ChatBot.vue
+Este componente es el encargado de mostrar el chatbot en la interfaz de usuario.
 -->
+
 <template>
   <div :class="{'streamer-mode': isStreamerMode}" class="container-fluid d-flex background-image">
     <img src="@/assets/left.jpg" class="iframe" alt="Left Image" />
@@ -28,8 +29,10 @@ Este archivo es el componente Vue que se encarga de mostrar el chatbot en la int
     </div>
   </div>
 </template>
+
 <script>
-import MadyBot_VueComponent from './MadyBot_VueComponent.js';
-export default MadyBot_VueComponent;
+import ChatBotComponent from './ChatBot.js';
+export default ChatBotComponent;
 </script>
+
 <style src="./MadyBot_Vue.css"></style>

@@ -17,6 +17,7 @@
     "marked": "^15.0.2",
     "mermaid": "^11.4.1",
     "postcss": "^8.4.31",
+    "socket.io-client": "^4.8.1",
     "vue": "^3.2.13"
   },
   "devDependencies": {
