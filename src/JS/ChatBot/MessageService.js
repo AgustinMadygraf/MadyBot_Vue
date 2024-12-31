@@ -13,8 +13,7 @@ class MessageService {
     this.idService = idService || IdGenerationService;
     this.userId = this.idService.generateUserId();
     this.defaultOptions = {
-      stream: process.env.VUE_APP_STREAM === 'true',
-      stream2: AppConfig.STREAM_ENABLED,
+      stream: AppConfig.STREAM_ENABLED,
       ...options,
     };
   console.log('[DEBUG] Valor API_ENDPOINT desde config.json:', AppConfig.API_ENDPOINT);
