@@ -1,5 +1,5 @@
 /*
-Path: src/services/BrowserDataService.js
+Path: src/JS/NetworkCheck/BrowserDataService.js
 El servicio BrowserDataService se encarga de obtener datos del navegador del usuario.
 */
 

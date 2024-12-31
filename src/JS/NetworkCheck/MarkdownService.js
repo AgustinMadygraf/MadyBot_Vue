@@ -1,5 +1,5 @@
 /*
-Path: src/services/MarkdownService.js
+Path: src/JS/NetworkCheck/MarkdownService.js
 El servicio MarkdownService se encarga de convertir texto en formato Markdown a HTML.
 */
 

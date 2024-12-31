@@ -1,10 +1,10 @@
 /*
-Path: src/services/IdGenerationService.js
+Path: src/JS/NetworkCheck/IdGenerationService.js
 El servicio IdGenerationService se encarga de generar IDs de usuario.
 */
 
 import { v4 as uuidv4 } from 'uuid';
-import BrowserDataService from '@/services/BrowserDataService';
+import BrowserDataService from '@/JS/NetworkCheck/BrowserDataService';
 
 class IdGenerationService {
   constructor(browserDataService) {
