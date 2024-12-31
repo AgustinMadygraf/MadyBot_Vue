@@ -49,53 +49,50 @@
 
 <script>
 import ChatBotComponent from '../JS/ChatBot/index.js';
-import emitter from '../JS/ChatBot/eventBus.js';  // Ajustar la ruta si difiere en tu proyecto
+import emitter from '../JS/ChatBot/eventBus.js';
+import { EVENTS } from '../JS/ChatBot/constants.js';
 
 export default {
-  /*
-    Extiende la configuración de ChatBotComponent, que a su vez
-    incorpora la lógica de ChatBotLogic.js.
-  */
   extends: ChatBotComponent,
 
   created() {
-    // Escuchamos los eventos emitidos desde la lógica de negocio (ChatBotLogic.js)
-    emitter.on('messageSent', () => {
-      this.scrollToBottom();
-    });
-
-    emitter.on('errorOccurred', (errorMsg) => {
-      console.error("Error en ChatBot:", errorMsg);
-      // Podrías, por ejemplo, mostrar un modal o un alert con el error
-      this.scrollToBottom();
-    });
+    this.initializeEventListeners();
   },
 
   methods: {
-    async SendHandleMessage() {
-      // Llamamos a la lógica de enviar mensajes
-      await this.sendChatMessage();
+    initializeEventListeners() {
+      emitter.on(EVENTS.MESSAGE_SENT, this.scrollToBottom);
+      emitter.on(EVENTS.ERROR_OCCURRED, this.handleError);
     },
 
-    // Método para desplazar el scroll hasta el final de la ventana de chat
-    scrollToBottom() {
-      const container = this.$refs.messageContainer;
-      if (container) {
-        container.scrollTop = container.scrollHeight;
+    async handleMessage() {
+      try {
+        await this.sendChatMessage();
+      } catch (error) {
+        console.error('Error sending message:', error);
+        this.handleError(error.message);
       }
-    }
+    },
+
+    handleError(errorMsg) {
+      console.error("Error en ChatBot:", errorMsg);
+      this.scrollToBottom();
+    },
+
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const container = this.$refs.messageContainer;
+        if (container) {
+          container.scrollTop = container.scrollHeight;
+        }
+      });
+    },
   },
 
-  watch: {
-    /*
-      Cada vez que se actualiza la lista de mensajes (ya sea por envío
-      del usuario o respuesta del bot), forzamos el scroll para ver el último.
-    */
-    messages() {
-      this.$nextTick(() => {
-        this.scrollToBottom();
-      });
-    }
+  beforeUnmount() {
+    // Clean up event listeners
+    emitter.off(EVENTS.MESSAGE_SENT, this.scrollToBottom);
+    emitter.off(EVENTS.ERROR_OCCURRED, this.handleError);
   }
 };
 </script>
