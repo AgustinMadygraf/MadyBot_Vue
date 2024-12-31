@@ -1,3 +1,8 @@
+<!--
+Path: src/components/MenuTabs.vue
+Este componente se encarga de mostrar las pestañas de la aplicación.
+-->
+
 <template>
     <div>
       <div class="menu-container">
@@ -31,7 +36,7 @@
         <MermaidDiagram />
       </div>
     </div>
-  </template>
+</template>
   
   <script>
   import MadyBot_Vue from './MadyBot_Vue.vue';

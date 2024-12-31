@@ -1,3 +1,8 @@
+<!--
+Path: src/App.vue
+Este componente es el contenedor principal de la aplicación.
+-->
+
 <template>
   <div id="app">
     <NetworkCheck />

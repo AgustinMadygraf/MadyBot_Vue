@@ -201,3 +201,24 @@ Estilos para el contenedor principal de la aplicación
   background-color: #f9f9f9;
   overflow-x: auto;
 }
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #007bff;
+  color: white;
+}
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+.navbar-menu li {
+  display: inline;
+}
+.navbar-menu a {
+  color: white;
+  text-decoration: none;
+}
