@@ -1,6 +1,6 @@
 // src/NetworkCheck/network.js
 
-import MessageService from './MessageService';
+import MessageService from '../ChatBot/MessageService';
 
 export class NetworkService {
   constructor(baseUrl) {

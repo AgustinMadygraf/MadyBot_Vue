@@ -1,5 +1,5 @@
 /*
-Path: src/services/ApiService.js
+Path: src/JS/NetworkCheck/ApiService.js
 El servicio ApiService se encarga de enviar mensajes a la API de MadyBot.
 */
 

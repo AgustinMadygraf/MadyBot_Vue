@@ -1,10 +1,10 @@
 /*
-Path: src/services/MessageService.js
+Path: src/JS/ChatBot/MessageService.js
 El servicio MessageService se encarga de enviar mensajes al servicio ApiService.
 */
 
-import ApiService from './ApiService';
-import IdGenerationService from './IdGenerationService';
+import ApiService from '../NetworkCheck/ApiService';
+import IdGenerationService from '../NetworkCheck/IdGenerationService';
 
 class MessageService {
   constructor(apiService, idService, options = {}) {

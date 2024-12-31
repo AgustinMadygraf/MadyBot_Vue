@@ -1,9 +1,9 @@
 /*
-Path: src/services/ChatService.js
+Path: src/JS/ChatBot/ChatService.js
 Clase responsable de la lógica de envío de mensajes.
 */
 
-import MessageService from '../JS/NetworkCheck/MessageService';
+import MessageService from './MessageService';
 
 class ChatService {
   async sendUserMessage(userMessage, currentTime) {

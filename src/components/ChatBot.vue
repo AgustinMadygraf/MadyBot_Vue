@@ -29,7 +29,7 @@ Este archivo es el componente Vue que se encarga de mostrar el chatbot en la int
   </div>
 </template>
 <script>
-import ChatBotComponent from '../JS/ChatBot/ChatBotComponentLogic.js';
+import ChatBotComponent from '../JS/ChatBot/index.js';
 export default ChatBotComponent;
 </script>
 <style src="../assets/style.css"></style>
