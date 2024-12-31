@@ -1,11 +1,11 @@
 /*
-Path: MadyBot_VueComponent.js
+Path: ChatBotComponentLogic.js
 Este archivo contiene la lógica de la aplicación de chat de MadyBot.
 */
 
 import MadyBot_VueScript from './ChatBotLogic.js';
 import '../assets/style.css';
-import MessageService from '../services/MessageService';
+import MessageService from '../services/MessageService.js';
 
 export default {
   data() {
