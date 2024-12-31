@@ -5,7 +5,7 @@ Este archivo contiene la lógica de la aplicación de chat de MadyBot.
 
 import MadyBot_VueScript from './ChatBotLogic.js';
 import '../assets/style.css';
-import MessageService from '../NetworkCheck/MessageService.js';
+import MessageService from '../JS/NetworkCheck/MessageService.js';
 
 export default {
   data() {

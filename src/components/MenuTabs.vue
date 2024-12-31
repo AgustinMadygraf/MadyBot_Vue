@@ -41,7 +41,7 @@ Este componente se encarga de mostrar las pestañas de la aplicación.
 </template>
 
 <script>
-import MenuService from '@/services/MenuService';
+import MenuService from '@/JS/MenuTabs/MenuService';
 import MadyBot_Vue from './ChatBot.vue.vue';
 import MermaidDiagram from './MermaidDiagram.vue';
 

@@ -9,7 +9,7 @@ import App from './App.vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import mermaid from 'mermaid';
-import { NetworkService } from './NetworkCheck';
+import { NetworkService } from './JS/NetworkCheck';
 
 // Inicializar Mermaid con configuración personalizada
 const initializeMermaid = () => {
