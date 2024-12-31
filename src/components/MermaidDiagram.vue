@@ -45,10 +45,10 @@ Este componente renderiza un diagrama Mermaid en la aplicación con mejor manejo
 
     </div>
     </div>
-  </template>
+</template>
   
   <script>
-  import { useMermaid } from '../hooks/useMermaid';
+  import { useMermaid } from '../JS/MermaidDiagram';
   
   export default {
     mounted() {

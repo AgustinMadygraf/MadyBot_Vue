@@ -1,6 +1,6 @@
 // Path: src/hooks/useMermaid.js
 import mermaid from 'mermaid';
-import { mermaidOptions } from '../utils/mermaidConfig';
+import { mermaidOptions } from './mermaidConfig';
 
 export const useMermaid = () => {
   const initMermaid = (containerId) => {
