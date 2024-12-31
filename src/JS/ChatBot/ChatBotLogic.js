@@ -3,7 +3,7 @@ Path: src/JS/ChatBot/ChatBotLogic.js
 Este archivo contiene la lógica de la aplicación de chat de MadyBot.
 */
 
-import ChatService from './ChatService';
+import ChatService from './ChatService.js';
 
 export default {
   data() {
