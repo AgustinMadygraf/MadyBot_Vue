@@ -5,20 +5,29 @@ Si no hay conexión, se muestra un mensaje de error.
 -->
 
 <template>
-    <div v-if="!isConnected" class="network-error"></div>
-  </template>
-  
-  <script>
-  import { checkBackendConnection } from '../utils/network';
-  
-  export default {
-    data() {
-      return {
-        isConnected: true
-      };
+  <div v-if="!isConnected" class="network-error">
+    <p>No hay conexión con el servidor.</p>
+  </div>
+</template>
+
+<script>
+import { NetworkService } from '../utils/network.js';
+
+export default {
+  data() {
+    return {
+      isConnected: true,
+      networkService: null,
+    };
+  },
+  created() {
+    this.networkService = new NetworkService();
+    this.checkConnection();
+  },
+  methods: {
+    async checkConnection() {
+      this.isConnected = await this.networkService.checkBackendConnection();
     },
-    async created() {
-      this.isConnected = await checkBackendConnection();
-    }
-  };
-  </script>
+  },
+};
+</script>
