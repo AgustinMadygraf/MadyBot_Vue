@@ -48,55 +48,36 @@
 </template>
 
 <script>
-/* 
-  Importamos el componente base que ya integra la lógica de ChatBotLogic.js.
-  Ajusta la ruta según la estructura de tu proyecto.
-*/
 import ChatBotComponent from '../JS/ChatBot/index.js';
-
-/*
-  Importamos nuestro Event Bus basado en mitt.
-  Ajusta la ruta a donde creaste tu `eventBus.js`.
-*/
-import emitter from '../JS/ChatBot/eventBus.js';
+import emitter from '../JS/ChatBot/eventBus.js';  // Ajustar la ruta si difiere en tu proyecto
 
 export default {
+  /*
+    Extiende la configuración de ChatBotComponent, que a su vez
+    incorpora la lógica de ChatBotLogic.js.
+  */
   extends: ChatBotComponent,
 
   created() {
-    /*
-      Reemplazamos this.$on() por emitter.on().
-      Aquí escuchamos eventos emitidos desde ChatBotLogic.js.
-    */
+    // Escuchamos los eventos emitidos desde la lógica de negocio (ChatBotLogic.js)
     emitter.on('messageSent', () => {
       this.scrollToBottom();
     });
 
     emitter.on('errorOccurred', (errorMsg) => {
       console.error("Error en ChatBot:", errorMsg);
-      // Si quieres mostrar el error en pantalla, podrías
-      // setear una variable local y usarla en el template o un alert.
+      // Podrías, por ejemplo, mostrar un modal o un alert con el error
       this.scrollToBottom();
     });
   },
 
   methods: {
     async SendHandleMessage() {
-      /*
-        Llamamos al método de negocio `sendChatMessage()`.
-        Como la lógica de negocio emitirá eventos en caso de éxito o error,
-        no es necesario forzar la UI aquí, pero podrías hacer un scroll 
-        inmediato si así lo deseas.
-      */
+      // Llamamos a la lógica de enviar mensajes
       await this.sendChatMessage();
-      // Por ejemplo, si deseas forzar el scroll cada vez que envíes el mensaje:
-      // this.scrollToBottom();
     },
 
-    /*
-      Método que se encarga de desplazar el scroll hasta el final del contenedor
-      cuando sea necesario. Sólo pertenece a la UI, no a la lógica de negocio.
-    */
+    // Método para desplazar el scroll hasta el final de la ventana de chat
     scrollToBottom() {
       const container = this.$refs.messageContainer;
       if (container) {
@@ -107,9 +88,8 @@ export default {
 
   watch: {
     /*
-      Cada vez que cambie la lista de mensajes, nos aseguramos de que el
-      scroll muestre el último mensaje. Esto es opcional, 
-      dependiendo de tu preferencia.
+      Cada vez que se actualiza la lista de mensajes (ya sea por envío
+      del usuario o respuesta del bot), forzamos el scroll para ver el último.
     */
     messages() {
       this.$nextTick(() => {

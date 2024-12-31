@@ -4,7 +4,7 @@ Este archivo contiene la lógica de la aplicación de chat de MadyBot.
 */
 
 import ChatService from './ChatService.js';
-import emitter from './eventBus.js';
+import emitter from './eventBus.js'; // Ajustar la ruta según tu proyecto
 
 export default {
   data() {
@@ -21,31 +21,37 @@ export default {
       this.lastSentMessage = this.userMessage;
       const currentTime = new Date().toLocaleTimeString('es-ES', { hour12: false });
 
-      // Agregamos el mensaje del usuario a la lista
+      // Añadimos el mensaje del usuario a la lista
       this.messages.push({
         text: this.lastSentMessage,
         type: 'user',
         time: currentTime
       });
+
+      // Borramos el campo de entrada
       this.userMessage = '';
 
       try {
+        // Llamamos a ChatService para procesar la respuesta del bot
         const responseMessage = await ChatService.sendUserMessage(
           this.lastSentMessage,
           currentTime
         );
+
+        // Añadimos la respuesta del bot al arreglo de mensajes
         this.messages.push({
           text: responseMessage,
           type: 'bot',
           time: new Date().toLocaleTimeString('es-ES', { hour12: false })
         });
 
-        // Emitimos un evento mediante mitt
+        // Notificamos que el mensaje se ha enviado correctamente
         emitter.emit('messageSent');
 
       } catch (error) {
         console.error("[ERROR MadyBot_Vue] Error al enviar el mensaje:", error.message);
 
+        // Agregamos un mensaje de error a la conversación
         this.messages.push({
           text: "Actualmente estamos experimentando problemas de conexión con el servidor. Por favor, intente nuevamente más tarde o contacte al soporte si el problema persiste.",
           type: 'bot',
@@ -54,7 +60,7 @@ export default {
 
         this.errorMessage = error.message;
 
-        // Emitimos un evento de error mediante mitt
+        // Emitimos el evento de error
         emitter.emit('errorOccurred', this.errorMessage);
       }
     }
