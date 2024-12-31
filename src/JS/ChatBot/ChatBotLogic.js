@@ -10,7 +10,8 @@ export default {
     return {
       userMessage: '',
       messages: [],
-      lastSentMessage: ''
+      lastSentMessage: '',
+      errorMessage: '' // Ejemplo de variable adicional para gestionar errores
     };
   },
   methods: {
@@ -19,18 +20,18 @@ export default {
       this.lastSentMessage = this.userMessage;
       const currentTime = new Date().toLocaleTimeString('es-ES', { hour12: false });
 
-      // Agregamos el mensaje del usuario a la lista
+      // Agregamos el mensaje del usuario a la lista local
       this.messages.push({
         text: this.lastSentMessage,
         type: 'user',
         time: currentTime
       });
 
-      // Limpiamos el input
+      // Limpiamos el campo de entrada
       this.userMessage = '';
 
       try {
-        // Petición al servicio de chat
+        // Llamamos al servicio para obtener la respuesta del bot
         const responseMessage = await ChatService.sendUserMessage(this.lastSentMessage, currentTime);
 
         // Agregamos la respuesta del bot a la lista de mensajes
@@ -40,15 +41,23 @@ export default {
           time: new Date().toLocaleTimeString('es-ES', { hour12: false })
         });
 
+        // Notificamos que la conversación se ha actualizado (para la vista)
+        this.$emit('conversationUpdated');
+
       } catch (error) {
         console.error("[ERROR MadyBot_Vue] Error al enviar el mensaje:", error.message);
 
-        // Si hay un error, mostramos mensaje de fallo
+        // Manejamos la respuesta en caso de error
         this.messages.push({
           text: "Actualmente estamos experimentando problemas de conexión con el servidor. Por favor, intente nuevamente más tarde o contacte al soporte si el problema persiste.",
           type: 'bot',
           time: new Date().toLocaleTimeString('es-ES', { hour12: false })
         });
+
+        this.errorMessage = error.message;
+
+        // Notificamos que la conversación se ha actualizado (para la vista)
+        this.$emit('conversationUpdated');
       }
     }
   }

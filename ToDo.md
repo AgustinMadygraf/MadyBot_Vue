@@ -1,30 +1,3 @@
-## 1. Extraer el manejo del scroll y la actualización de la interfaz
-**Archivo principal:** `src/JS/ChatBot/ChatBotLogic.js`
-
-1.1 **Crear un método o hook de Vue específico para el scroll**  
-   - Identifica la parte del método `sendChatMessage` que gestiona el `scrollTop = messageContainer.scrollHeight`.  
-   - Crea en el componente Vue (`ChatBot.vue`) un método como `handleScroll()` o un “hook” que se ejecute tras cada actualización de mensajes.  
-   - Haz que `ChatBotLogic.js` invoque este método para notificar a la vista que debe desplazarse.
-
-1.2 **Separar la responsabilidad del DOM**  
-   - El código que localiza `this.$refs.messageContainer` no debería residir en la lógica de negocio.  
-   - En lugar de ello, el componente Vue puede encargarse de obtener la referencia y manejar el desplazamiento.
-
----
-
-## 2. Asegurar que `sendChatMessage` se enfoque en la interacción con `ChatService`
-**Archivo principal:** `src/JS/ChatBot/ChatBotLogic.js`
-
-2.1 **Reducir la dependencia de la vista**  
-   - `sendChatMessage` debe ejecutar la lógica de envío (agregar el mensaje a la lista, invocar a `ChatService`, capturar errores) sin encargarse de tareas visuales.  
-   - Después de que `sendChatMessage` termine, emitir un evento o actualizar un estado que el componente Vue observe para refrescar la interfaz (y así llamar el método de scroll, por ejemplo).
-
-2.2 **Respetar la responsabilidad única**  
-   - La lógica de negocio: almacenar el mensaje, obtener la respuesta del bot, manejar errores.  
-   - La lógica de presentación: actualizar el DOM, hacer scroll, habilitar o deshabilitar botones, etc.
-
----
-
 ## 3. Delegar la referencia de elementos al componente Vue
 **Archivo principal:** `src/components/ChatBot.vue`
 
