@@ -23,29 +23,9 @@ const initializeMermaid = () => {
       logLevel: 5, // Habilitar nivel máximo de logs para Mermaid
     });
 
-    // Depuración: Verificar versión de Mermaid
     console.log(`Versión de Mermaid: ${mermaid.version}`);
-
-    // Verificar la existencia del contenedor
-    const mermaidContainer = document.getElementById('mermaid');
-    if (!mermaidContainer) {
-      console.error('Error: El contenedor de Mermaid no se encontró.');
-      return;
-    }
-    console.log('Contenedor de Mermaid encontrado:', mermaidContainer);
-
-    // Depuración: Verificar contenido del contenedor
-    console.log('Contenido inicial del contenedor de Mermaid:', mermaidContainer.innerHTML);
-
-    // Renderizar el diagrama de Mermaid
-    mermaid.init(undefined, mermaidContainer);
-    console.log('Mermaid se ha renderizado correctamente.');
-
-    // Depuración: Verificar contenido después del renderizado
-    console.log('Contenido del contenedor después del renderizado:', mermaidContainer.innerHTML);
   } catch (error) {
-    console.error('Error al inicializar Mermaid:', error.message);
-    console.error('Detalles del error:', error);
+    console.error('Error durante la configuración inicial de Mermaid:', error);
   }
 };
 
@@ -60,10 +40,10 @@ nextTick(async () => {
 
   if (!isConnected) {
     console.error('No se pudo conectar al backend. Por favor, verifique su conexión de red.');
-    // Aquí puedes manejar un mensaje de error en la UI si lo deseas
-  } else {
-    console.log('Conexión con el backend exitosa.');
+    return;
   }
+
+  console.log('Conexión con el backend exitosa.');
 
   // Inicializar Mermaid después de verificar la conexión
   initializeMermaid();

@@ -1,11 +1,18 @@
+<!--
+Path: src/components/MermaidDiagram.vue
+Este componente renderiza un diagrama Mermaid en la aplicación con mejor manejo de errores.
+-->
+
 <template>
-    <div id="mermaid">
-    graph TD;
+    <div>
+      <div id="mermaid">
+        graph TD;
     App[App.vue] --> NetworkCheck[NetworkCheck.vue];
     App --> NavBar[NavBar.vue];
     App --> MenuTabs[MenuTabs.vue];
     MenuTabs --> MadyBot[MadyBot_Vue.vue];
     MenuTabs --> MermaidDiagram[MermaidDiagram.vue];
+    </div>
     </div>
   </template>
   
@@ -23,14 +30,19 @@
         }
   
         try {
+          // Configurar Mermaid
           mermaid.initialize({
             startOnLoad: false,
-            securityLevel: 'loose',
-            theme: 'default',
-            logLevel: 5, // Máxima depuración
+            securityLevel: 'loose', // Permitir HTML
+            theme: 'default', // Tema predeterminado
+            logLevel: 5, // Nivel de depuración
           });
+  
           console.log(`Versión de Mermaid: ${mermaid.version || 'indefinida'}`);
+  
+          // Renderizar Mermaid
           mermaid.init(undefined, mermaidContainer);
+  
           console.log("Mermaid se ha renderizado correctamente.");
         } catch (error) {
           console.error("Error al renderizar Mermaid:", error);
@@ -42,4 +54,13 @@
     },
   };
   </script>
+  
+  <style scoped>
+  #mermaid {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+    overflow-x: auto;
+  }
+  </style>
   
