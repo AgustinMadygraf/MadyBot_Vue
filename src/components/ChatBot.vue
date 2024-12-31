@@ -18,7 +18,10 @@ Este archivo es el componente Vue que se encarga de mostrar el chatbot en la int
         <div
           v-for="(message, index) in messages"
           :key="index"
-          :class="{'message-received': message.type === 'bot', 'message-sent': message.type === 'user'}"
+          :class="{
+            'message-received': message.type === 'bot',
+            'message-sent': message.type === 'user'
+          }"
         >
           <div v-html="message.text"></div>
           <div class="message-time">{{ message.time }}</div>
@@ -49,14 +52,22 @@ Este archivo es el componente Vue que se encarga de mostrar el chatbot en la int
 import ChatBotComponent from '../JS/ChatBot/index.js';
 
 export default {
-  // Extendemos la configuración original
+  // Extiende el objeto exportado por ChatBotComponent,
+  // que a su vez incluye ChatBotLogic.js
   extends: ChatBotComponent,
 
   methods: {
     async SendHandleMessage() {
-      // Llamamos al método de negocio (definido en ChatBotLogic.js)
+      /*
+        Llamamos al método de negocio `sendChatMessage`.
+        Este método no manejará el scroll ni la referencia a `messageContainer`,
+        sino que se limita a la lógica de envío y recepción.
+      */
       await this.sendChatMessage();
-      // Nos encargamos del scroll en la vista
+      /*
+        Luego de enviar el mensaje, si deseamos forzar
+        la posición del scroll, llamamos a nuestro método local.
+      */
       this.scrollToBottom();
     },
 
@@ -69,8 +80,12 @@ export default {
     }
   },
 
-  // Cada vez que cambie la lista de mensajes, desplazamos la vista
   watch: {
+    /*
+      Cada vez que cambie la lista de mensajes,
+      forzamos el scroll al final del contenedor.
+      Así evitamos la necesidad de usar this.$refs en ChatBotLogic.js.
+    */
     messages() {
       this.$nextTick(() => {
         this.scrollToBottom();

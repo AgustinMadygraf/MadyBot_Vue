@@ -1,14 +1,3 @@
-## 3. Delegar la referencia de elementos al componente Vue
-**Archivo principal:** `src/components/ChatBot.vue`
-
-3.1 **Pasar menos referencias al script de lógica**  
-   - Evitar o reducir el uso de `this.$refs` en `ChatBotLogic.js`.  
-   - Manejar las referencias de `ref="messageContainer"` directamente en `ChatBot.vue` y, si es necesario, propagar un evento hacia la lógica para indicar que el contenedor está listo o se ha desplazado.
-
-3.2 **Utilizar props o data en el componente**  
-   - Cuando la lógica de negocio cambie `messages`, el componente Vue debe actualizar la vista automáticamente.  
-   - Mantener la lógica de re-render en la capa de la vista (o en watchers específicos, si se necesitan).
-
 ---
 
 ## 4. Implementar un patrón de notificación o eventos

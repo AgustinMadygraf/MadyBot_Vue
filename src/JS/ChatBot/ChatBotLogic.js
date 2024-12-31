@@ -20,7 +20,7 @@ export default {
       this.lastSentMessage = this.userMessage;
       const currentTime = new Date().toLocaleTimeString('es-ES', { hour12: false });
 
-      // Agregamos el mensaje del usuario a la lista local
+      // Agregamos el mensaje del usuario a la lista
       this.messages.push({
         text: this.lastSentMessage,
         type: 'user',
@@ -32,7 +32,10 @@ export default {
 
       try {
         // Llamamos al servicio para obtener la respuesta del bot
-        const responseMessage = await ChatService.sendUserMessage(this.lastSentMessage, currentTime);
+        const responseMessage = await ChatService.sendUserMessage(
+          this.lastSentMessage,
+          currentTime
+        );
 
         // Agregamos la respuesta del bot a la lista de mensajes
         this.messages.push({
@@ -41,13 +44,13 @@ export default {
           time: new Date().toLocaleTimeString('es-ES', { hour12: false })
         });
 
-        // Notificamos que la conversación se ha actualizado (para la vista)
+        // Emitimos un evento para notificar que hubo un cambio (si se desea)
         this.$emit('conversationUpdated');
 
       } catch (error) {
         console.error("[ERROR MadyBot_Vue] Error al enviar el mensaje:", error.message);
 
-        // Manejamos la respuesta en caso de error
+        // Añadimos mensaje de error a la conversación
         this.messages.push({
           text: "Actualmente estamos experimentando problemas de conexión con el servidor. Por favor, intente nuevamente más tarde o contacte al soporte si el problema persiste.",
           type: 'bot',
@@ -56,7 +59,7 @@ export default {
 
         this.errorMessage = error.message;
 
-        // Notificamos que la conversación se ha actualizado (para la vista)
+        // Emitimos un evento para que la vista reaccione al error
         this.$emit('conversationUpdated');
       }
     }
