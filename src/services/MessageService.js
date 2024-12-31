@@ -7,29 +7,51 @@ import ApiService from './ApiService';
 import IdGenerationService from './IdGenerationService';
 
 class MessageService {
-  constructor() {
-    this.userId = IdGenerationService.generateUserId();
+  constructor(apiService, idService, options = {}) {
+    this.apiService = apiService || ApiService;
+    this.idService = idService || IdGenerationService;
+    this.userId = this.idService.generateUserId();
+    this.defaultOptions = {
+      stream: process.env.VUE_APP_STREAM === 'true',
+      ...options,
+    };
   }
 
-  async sendBotMessage(userMessage) {
-    console.log("[INFO] Iniciando el envío del mensaje:", userMessage);
+  async sendBotMessage(userMessage, options = {}) {
+    console.log('[INFO] Iniciando el envío del mensaje:', userMessage);
 
     try {
-      const datetime = Math.floor(Date.now() / 1000);
-      console.log("[INFO] Fecha y hora actual:", datetime);
-      const stream = process.env.VUE_APP_STREAM === 'true';
-      console.log("[INFO] Stream:", stream);
-      const response_diccionario = await ApiService.sendApiMessage(userMessage, this.userId, stream, datetime);
-      const response = response_diccionario["normal"];
-      console.log("[INFO] Mensaje enviado exitosamente:", response);
+      const datetime = this._getCurrentTimestamp();
+      console.log('[INFO] Fecha y hora actual:', datetime);
+
+      const mergedOptions = {
+        ...this.defaultOptions,
+        ...options,
+      };
+
+      console.log('[INFO] Opciones utilizadas:', mergedOptions);
+
+      const responseDict = await this.apiService.sendApiMessage(
+        userMessage,
+        this.userId,
+        mergedOptions.stream,
+        datetime
+      );
+
+      const response = responseDict['normal'];
+      console.log('[INFO] Mensaje enviado exitosamente:', response);
       return response;
     } catch (error) {
-      console.error("[ERROR MessageService] Error al enviar el mensaje:", error.message);
-      throw new Error("Hubo un problema al enviar el mensaje. Inténtalo de nuevo.");
+      console.error('[ERROR MessageService] Error al enviar el mensaje:', error.message);
+      throw new Error('Hubo un problema al enviar el mensaje. Inténtalo de nuevo.');
     } finally {
-      console.log("[INFO] Operación de envío de mensaje finalizada.");
+      console.log('[INFO] Operación de envío de mensaje finalizada.');
     }
+  }
+
+  _getCurrentTimestamp() {
+    return Math.floor(Date.now() / 1000);
   }
 }
 
-export default new MessageService();
+export default new MessageService(ApiService, IdGenerationService);

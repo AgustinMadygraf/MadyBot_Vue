@@ -4,12 +4,12 @@ Este script es el punto de entrada de la aplicación.
 Aquí inicializamos Mermaid y verificamos la conexión con el backend.
 */
 
-import { checkBackendConnection } from './utils/network';
 import { createApp, nextTick } from 'vue';
 import App from './App.vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import mermaid from 'mermaid';
+import { NetworkService } from './utils/network';
 
 // Inicializar Mermaid con configuración personalizada
 const initializeMermaid = () => {
@@ -32,10 +32,13 @@ const initializeMermaid = () => {
 // Crear la aplicación de Vue
 const app = createApp(App);
 
+// Inyectar NetworkService
+const networkService = new NetworkService();
+
 // Verificar la conexión con el backend
 nextTick(async () => {
   console.log('Iniciando la verificación de conexión con el backend...');
-  const isConnected = await checkBackendConnection();
+  const isConnected = await networkService.checkBackendConnection();
   console.log('Resultado de la verificación de conexión:', isConnected);
 
   if (!isConnected) {

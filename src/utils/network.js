@@ -1,6 +1,6 @@
 // src/utils/network.js
 
-import MessageService from '../services/MessageService.js';
+import MessageService from '../services/MessageService';
 
 export class NetworkService {
   constructor(baseUrl) {
