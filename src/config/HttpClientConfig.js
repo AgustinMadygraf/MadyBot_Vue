@@ -1,5 +1,5 @@
 /*
-Path: src/config/HttpClientConfig.js (modificado)
+Path: src/config/HttpClientConfig.js
 Este archivo define la configuración global de Axios.
 */
 
@@ -20,7 +20,14 @@ const getApiEndpoint = async () => {
   } catch (error) {
     LogService.warn('[HttpClientConfig] Fallback: Obteniendo API_ENDPOINT desde PHP...');
     try {
-      const response = await axios.get('/public/get_data.php');
+      const response = await axios.get('http://localhost/MadyBot_Vue/public/get_data.php');
+
+      // Validar si el endpoint está definido
+      if (!response.data.endpoint) {
+        LogService.warn('[HttpClientConfig] El campo "endpoint" está undefined en la respuesta de PHP. Usando valor por defecto.');
+        throw new Error('El endpoint devuelto por PHP es undefined');
+      }
+
       LogService.info('[HttpClientConfig] API_ENDPOINT obtenido desde PHP:', response.data.endpoint);
       return response.data.endpoint;
     } catch (phpError) {
