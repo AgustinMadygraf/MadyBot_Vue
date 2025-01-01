@@ -10,7 +10,7 @@ import logger from '../LogService';
 
 class ApiService {
   constructor(baseUrl) {
-    logger.debug('Initializing ApiService with baseUrl:', baseUrl);
+    logger.debug('[ApiService] Initializing with baseUrl:', baseUrl);
     this.baseUrl = baseUrl;
     this.endpoint = '/receive-data';
 
@@ -18,6 +18,7 @@ class ApiService {
     this.httpClient = axios.create({
       baseURL: this.baseUrl,
       headers: { 'Content-Type': 'application/json' },
+      timeout: 5000, // Tiempo de espera en milisegundos
     });
 
     // Interceptor para manejo de errores de red
@@ -28,47 +29,66 @@ class ApiService {
   }
 
   async sendApiMessage(prompt_user, user_data, stream = false, datetime = null) {
-    logger.debug('Sending API message:', { prompt_user, user_data, stream, datetime });
+    logger.debug('[ApiService] Sending API message', { prompt_user, user_data, stream, datetime });
     try {
-      const url = this.endpoint;
-      const response = await this.httpClient.post(url, {
+      const response = await this.httpClient.post(this.endpoint, {
         prompt_user,
         stream,
         datetime: datetime || this._getCurrentTimestamp(),
         user_data,
       });
-      logger.info('Message sent successfully');
+      logger.info('[ApiService] Message sent successfully');
       return this._processApiResponse(response.data);
     } catch (error) {
-      logger.error('Failed to send message:', error);
-      throw error;
+      logger.error('[ApiService] Failed to send message:', error.message);
+      throw new Error(`Error al enviar mensaje a la API: ${error.message}`);
+    }
+  }
+
+  async checkServerHealth() {
+    logger.debug('[ApiService] Checking server health');
+    try {
+      const response = await this.httpClient.get('/health-check');
+      logger.info('[ApiService] Server health:', response.status);
+      return response.status === 200;
+    } catch (error) {
+      logger.warn('[ApiService] Server health check failed:', error.message);
+      return false;
     }
   }
 
   _processApiResponse(data) {
     try {
-      const htmlResponse = data.response_MadyBot
-        ? MarkdownService.convertToHtml(data.response_MadyBot)
-        : null;
-      const htmlResponseStream = data.response_MadyBot_stream
-        ? MarkdownService.convertToHtml(data.response_MadyBot_stream)
-        : null;
-
-      console.log('[INFO] Respuesta convertida a HTML:', { htmlResponse, htmlResponseStream });
-      return { normal: htmlResponse, stream: htmlResponseStream };
+      return {
+        normal: this._convertToHtml(data.response_MadyBot),
+        stream: this._convertToHtml(data.response_MadyBot_stream),
+      };
     } catch (conversionError) {
-      console.error('[ERROR API] Error al convertir la respuesta a HTML:', conversionError);
-      throw new Error('Error en la conversión a HTML en ApiService: ' + conversionError.message);
+      logger.error('[ApiService] Error converting response to HTML:', conversionError.message);
+      throw new Error('Error al procesar la respuesta de la API.');
     }
   }
 
+  _convertToHtml(markdown) {
+    if (!markdown) {
+      logger.warn('[ApiService] Markdown data is empty or invalid');
+      return null;
+    }
+    return MarkdownService.convertToHtml(markdown);
+  }
+
   _handleNetworkError(error) {
+    if (error.code === 'ECONNABORTED') {
+      logger.error('[ApiService] Request timeout:', error.message);
+      return Promise.reject(new Error('La solicitud tardó demasiado en responder.'));
+    }
     if (error.message === 'Network Error') {
-      console.error('[ERROR API] Network Error: El backend no está disponible.');
+      logger.error('[ApiService] Network Error: Backend unavailable');
       return Promise.reject(
         new Error('El servidor no está disponible. Por favor, intente más tarde.')
       );
     }
+    logger.error('[ApiService] HTTP error:', error.response?.status, error.message);
     return Promise.reject(error);
   }
 
@@ -78,7 +98,6 @@ class ApiService {
 }
 
 // Exporta una instancia preconfigurada de ApiService
-console.log('[INFO] Valor de AppConfig:', AppConfig);
-console.log('[INFO] Valor de AppConfig.BASE_URL:', AppConfig.API_ENDPOINT);
+logger.debug('[ApiService] AppConfig values:', AppConfig);
 const apiServiceInstance = new ApiService(AppConfig.API_ENDPOINT);
 export default apiServiceInstance;

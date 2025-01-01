@@ -3,44 +3,47 @@ Path: src/JS/LogService.js
 Este script se encarga de enviar los logs al servidor.
 */
 
+import log from 'loglevel';
+import prefix from 'loglevel-plugin-prefix';
+
 class LogService {
-    constructor() {
-      this.logLevel = process.env.VUE_APP_LOG_LEVEL || 'info';
-      this.levels = {
-        debug: 0,
-        info: 1,
-        warn: 2,
-        error: 3
-      };
-    }
-  
-    debug(...args) {
-      if (this.shouldLog('debug')) {
-        console.debug('[DEBUG]', ...args);
-      }
-    }
-  
-    info(...args) {
-      if (this.shouldLog('info')) {
-        console.info('[INFO]', ...args);
-      }
-    }
-  
-    warn(...args) {
-      if (this.shouldLog('warn')) {
-        console.warn('[WARN]', ...args);
-      }
-    }
-  
-    error(...args) {
-      if (this.shouldLog('error')) {
-        console.error('[ERROR]', ...args);
-      }
-    }
-  
-    shouldLog(level) {
-      return this.levels[level] >= this.levels[this.logLevel];
+  constructor() {
+    const env = process.env.NODE_ENV; // "development" o "production"
+    this.logger = log;
+
+    // Configurar el complemento de prefijos
+    prefix.reg(log);
+    prefix.apply(log, {
+      format(level, name, timestamp) {
+        // Agrega el stack trace para mostrar la línea de código
+        const stack = new Error().stack.split('\n')[3]?.trim();
+        return `${timestamp} [${level}] ${stack}`;
+      },
+    });
+
+    // Configura el nivel de log según el entorno
+    if (env === 'development') {
+      this.logger.setLevel('debug');
+    } else {
+      this.logger.setLevel('warn'); // Excluir "debug" e "info" en producción
     }
   }
-  
-  export default new LogService();
+
+  debug(...args) {
+    this.logger.debug('[DEBUG]', ...args);
+  }
+
+  info(...args) {
+    this.logger.info('[INFO]', ...args);
+  }
+
+  warn(...args) {
+    this.logger.warn('[WARN]', ...args);
+  }
+
+  error(...args) {
+    this.logger.error('[ERROR]', ...args);
+  }
+}
+
+export default new LogService();
