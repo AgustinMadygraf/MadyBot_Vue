@@ -10,10 +10,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import { NetworkService } from './JS/NetworkCheck';
 import mermaid from 'mermaid';
+import logger from './JS/LogService';
 
 // Inicializar Mermaid con configuración personalizada
 const initializeMermaid = () => {
-  console.log('Inicializando Mermaid...');
+  logger.info('[Main] Inicializando Mermaid...');
   try {
     // Configuración inicial de Mermaid
     mermaid.initialize({
@@ -23,9 +24,9 @@ const initializeMermaid = () => {
       logLevel: 5, // Habilitar nivel máximo de logs para Mermaid
     });
 
-    console.log(`Versión de Mermaid: ${mermaid.version}`);
+    logger.info(`[Main] Versión de Mermaid: ${mermaid.version}`);
   } catch (error) {
-    console.error('Error durante la configuración inicial de Mermaid:', error);
+    logger.error('[Main] Error durante la configuración inicial de Mermaid:', error.message);
   }
 };
 
@@ -37,19 +38,23 @@ const networkService = new NetworkService();
 
 // Verificar la conexión con el backend
 nextTick(async () => {
-  console.log('Iniciando la verificación de conexión con el backend...');
-  const isConnected = await networkService.checkBackendConnection();
-  console.log('Resultado de la verificación de conexión:', isConnected);
+  logger.info('[Main] Iniciando la verificación de conexión con el backend...');
+  try {
+    const isConnected = await networkService.checkBackendConnection();
+    logger.debug('[Main] Resultado de la verificación de conexión:', isConnected);
 
-  if (!isConnected) {
-    console.error('No se pudo conectar al backend. Por favor, verifique su conexión de red.');
-    return;
+    if (!isConnected) {
+      logger.warn('[Main] No se pudo conectar al backend. Verifique su conexión de red.');
+      return;
+    }
+
+    logger.info('[Main] Conexión con el backend exitosa.');
+
+    // Inicializar Mermaid después de verificar la conexión
+    initializeMermaid();
+  } catch (error) {
+    logger.error('[Main] Error al verificar la conexión con el backend:', error.message);
   }
-
-  console.log('Conexión con el backend exitosa.');
-
-  // Inicializar Mermaid después de verificar la conexión
-  initializeMermaid();
 });
 
 // Montar la aplicación
