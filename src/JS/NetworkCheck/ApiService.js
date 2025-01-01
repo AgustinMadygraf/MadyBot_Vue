@@ -6,9 +6,11 @@ El servicio ApiService se encarga de enviar mensajes a la API de MadyBot.
 import axios from 'axios';
 import MarkdownService from './MarkdownService';
 import AppConfig from '../../config/index.js';
+import logger from '../LogService';
 
 class ApiService {
   constructor(baseUrl) {
+    logger.debug('Initializing ApiService with baseUrl:', baseUrl);
     this.baseUrl = baseUrl;
     this.endpoint = '/receive-data';
 
@@ -26,25 +28,20 @@ class ApiService {
   }
 
   async sendApiMessage(prompt_user, user_data, stream = false, datetime = null) {
-    console.log('[INFO] Iniciando envío de mensaje a la API...');
-    console.log('[INFO] Datos enviados:', { prompt_user, user_data, stream, datetime });
-
+    logger.debug('Sending API message:', { prompt_user, user_data, stream, datetime });
     try {
       const url = this.endpoint;
-      console.log('[INFO] URL de la API:', url);
-
       const response = await this.httpClient.post(url, {
         prompt_user,
         stream,
         datetime: datetime || this._getCurrentTimestamp(),
         user_data,
       });
-
-      console.log('[INFO] Respuesta recibida de la API:', response.data);
+      logger.info('Message sent successfully');
       return this._processApiResponse(response.data);
-    } catch (apiError) {
-      console.error('[ERROR API] Error al enviar el mensaje a la API:', apiError.message);
-      throw new Error('Error en la solicitud a la API en ApiService: ' + apiError.message);
+    } catch (error) {
+      logger.error('Failed to send message:', error);
+      throw error;
     }
   }
 
