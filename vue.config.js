@@ -4,7 +4,8 @@ Este script se encarga de cargar la configuración de la aplicación desde el ar
 */
 
 const { defineConfig } = require('@vue/cli-service');
-const finalConfig = require('./src/config/configWrapperNode'); 
+const finalConfig = require('./src/config/configWrapperNode');
+const webpack = require('webpack');
 
 module.exports = defineConfig({
   publicPath: finalConfig.BASE_URL,
@@ -33,5 +34,12 @@ module.exports = defineConfig({
         'vue$': 'vue/dist/vue.esm-bundler.js',
       },
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
+        __VUE_OPTIONS_API__: true,
+        __VUE_PROD_DEVTOOLS__: false
+      })
+    ]
   }
 });

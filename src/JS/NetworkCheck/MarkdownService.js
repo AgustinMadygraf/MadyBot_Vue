@@ -4,6 +4,7 @@ El servicio MarkdownService se encarga de convertir texto en formato Markdown a 
 */
 
 import { marked } from 'marked';
+import logger from '../LogService';
 
 class MarkdownService {
   constructor(options = {}) {
@@ -16,6 +17,7 @@ class MarkdownService {
 
     // Inicializa `marked` con las opciones configuradas
     marked.setOptions(this.options);
+    logger.debug('[MarkdownService] Inicializado con opciones:', this.options);
   }
 
   /**
@@ -25,16 +27,18 @@ class MarkdownService {
    */
   convertToHtml(markdownText) {
     try {
-      if (!markdownText || typeof markdownText !== 'string') {
+      logger.debug('[MarkdownService] Iniciando conversión de Markdown a HTML');
+      if (!this.isValidMarkdown(markdownText)) {
+        logger.warn('[MarkdownService] El texto proporcionado no es válido:', markdownText);
         throw new Error('El texto proporcionado no es válido.');
       }
 
       // Llama a `marked` para convertir el texto Markdown a HTML
       const html = marked(markdownText);
-      console.log('[INFO MarkdownService] Conversión exitosa.');
+      logger.info('[MarkdownService] Conversión exitosa.');
       return html;
     } catch (error) {
-      console.error('[ERROR MarkdownService] Error al convertir Markdown a HTML:', error.message);
+      logger.error('[MarkdownService] Error al convertir Markdown a HTML:', error.message);
       throw error;
     }
   }
@@ -45,7 +49,11 @@ class MarkdownService {
    * @returns {boolean} - True si el texto es válido, False si no lo es.
    */
   isValidMarkdown(markdownText) {
-    return typeof markdownText === 'string' && markdownText.trim().length > 0;
+    const isValid = typeof markdownText === 'string' && markdownText.trim().length > 0;
+    if (!isValid) {
+      logger.debug('[MarkdownService] Validación fallida para el texto:', markdownText);
+    }
+    return isValid;
   }
 }
 

@@ -1,24 +1,29 @@
-// src/JS/NetworkCheck/index.js
+/*
+Path: src/JS/NetworkCheck/index.js
+
+*/
 
 import MessageService from '../ChatBot/MessageService';
 import AppConfig from '../../config';
+import logger from '../LogService';
 
 export class NetworkService {
   constructor(baseUrl) {
-    console.log('Iniciando servicio de verificación de conexión con el backend...');
-    console.log('Base URL:', baseUrl);
-    console.log('AppConfig:', AppConfig.API_ENDPOINT);
     this.baseUrl = baseUrl || AppConfig.API_ENDPOINT;
     this.endpoint = '/receive-data';
-    console.log('URL del backend:', this.baseUrl);
+
+    logger.debug('[NetworkService] Servicio iniciado con configuración:', {
+      baseUrl: this.baseUrl,
+      endpoint: this.endpoint,
+    });
   }
 
   async checkBackendConnection() {
-    console.log('Iniciando verificación de conexión con el backend...');
+    logger.info('[NetworkService] Iniciando verificación de conexión con el backend');
 
     try {
       const url = `${this.baseUrl}${this.endpoint}`;
-      console.log('URL del backend:', url);
+      logger.debug('[NetworkService] URL completa para la verificación:', url);
 
       const response = await fetch(url, {
         method: 'POST',
@@ -29,22 +34,22 @@ export class NetworkService {
         body: JSON.stringify(this._getRequestPayload()),
       });
 
-      console.log('Respuesta recibida del backend:', response);
-
       if (response.ok) {
-        console.log('Conexión con el backend exitosa. Enviando mensaje de bienvenida...');
+        logger.info('[NetworkService] Conexión exitosa con el backend');
         await MessageService.sendBotMessage('Hola!');
+        return true;
+      } else {
+        logger.warn('[NetworkService] Conexión fallida con el backend. Código de estado:', response.status);
+        return false;
       }
-
-      return response.ok;
     } catch (error) {
-      console.error('Error durante la verificación de conexión:', error);
+      logger.error('[NetworkService] Error durante la verificación de conexión:', error.message);
       return { error: true, message: error.message };
     }
   }
 
   _getRequestPayload() {
-    return {
+    const payload = {
       prompt_user: 'Probando conexión con el backend',
       user_data: {
         id: '12345',
@@ -57,5 +62,8 @@ export class NetworkService {
       },
       stream: false,
     };
+
+    logger.debug('[NetworkService] Payload generado para la solicitud:', payload);
+    return payload;
   }
 }
