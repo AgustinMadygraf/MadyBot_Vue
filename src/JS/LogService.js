@@ -25,7 +25,7 @@ class LogService {
     if (env === 'development') {
       this.logger.setLevel('debug');
     } else {
-      this.logger.setLevel('warn'); // Excluir "debug" e "info" en producción
+      this.logger.setLevel('info');
     }
   }
 
@@ -73,6 +73,5 @@ function parseFileAndLine(stackLine) {
 
   return `${filePath}:${lineNumber}`;
 }
-
 
 export default new LogService();
