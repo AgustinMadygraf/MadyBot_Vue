@@ -57,15 +57,22 @@ function getCallerFileStack() {
 }
 
 function parseFileAndLine(stackLine) {
-  // Extrae "src/JS/NetworkCheck/ApiService.js" + linea (sin columna)
+  // Regex para extraer "src/JS/NetworkCheck/ApiService.js" y la línea
   const regex = /webpack-internal:\/\/\/\.(\/.*?):(\d+):\d+/;
   const match = stackLine.match(regex);
 
   if (!match) return null;
 
-  const filePath = match[1].replace(/^\/?/, ''); // Quita el / inicial
+  let filePath = match[1].replace(/^\/?/, ''); // Quita el slash inicial
   const lineNumber = match[2];
+
+  // Eliminar "src/" del path si existe
+  if (filePath.startsWith('src/JS')) {
+    filePath = filePath.slice(6); // Elimina los primeros 6 caracteres ("src/JS")
+  }
+
   return `${filePath}:${lineNumber}`;
 }
+
 
 export default new LogService();
