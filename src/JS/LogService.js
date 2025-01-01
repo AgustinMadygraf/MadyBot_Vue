@@ -11,17 +11,17 @@ class LogService {
     const env = process.env.NODE_ENV; // "development" o "production"
     this.logger = log;
 
-    // Configurar el complemento de prefijos
     prefix.reg(log);
     prefix.apply(log, {
       format(level, name, timestamp) {
-        // Agrega el stack trace para mostrar la línea de código
-        const stack = new Error().stack.split('\n')[3]?.trim();
-        return `${timestamp} [${level}] ${stack}`;
+        const callerStackLine = getCallerFileStack();
+        const parsedLocation = parseFileAndLine(callerStackLine) || '';
+        
+        // Podés ajustar el formato a tu gusto
+        return `${timestamp} [${level}] [${parsedLocation}]`;
       },
     });
 
-    // Configura el nivel de log según el entorno
     if (env === 'development') {
       this.logger.setLevel('debug');
     } else {
@@ -30,20 +30,42 @@ class LogService {
   }
 
   debug(...args) {
-    this.logger.debug('[DEBUG]', ...args);
+    this.logger.debug(...args);
   }
 
   info(...args) {
-    this.logger.info('[INFO]', ...args);
+    this.logger.info(...args);
   }
 
   warn(...args) {
-    this.logger.warn('[WARN]', ...args);
+    this.logger.warn(...args);
   }
 
   error(...args) {
-    this.logger.error('[ERROR]', ...args);
+    this.logger.error(...args);
   }
+}
+
+// === Funciones de ayuda ===
+function getCallerFileStack() {
+  const stackLines = new Error().stack.split('\n').map(line => line.trim());
+  // Buscamos la primera línea de "src/" que no sea LogService.js
+  return stackLines.find(line =>
+    line.includes('webpack-internal:///./src/') && 
+    !line.includes('LogService.js')
+  ) || '';
+}
+
+function parseFileAndLine(stackLine) {
+  // Extrae "src/JS/NetworkCheck/ApiService.js" + linea (sin columna)
+  const regex = /webpack-internal:\/\/\/\.(\/.*?):(\d+):\d+/;
+  const match = stackLine.match(regex);
+
+  if (!match) return null;
+
+  const filePath = match[1].replace(/^\/?/, ''); // Quita el / inicial
+  const lineNumber = match[2];
+  return `${filePath}:${lineNumber}`;
 }
 
 export default new LogService();
