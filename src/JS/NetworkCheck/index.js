@@ -1,11 +1,16 @@
 // src/JS/NetworkCheck/index.js
 
 import MessageService from '../ChatBot/MessageService';
+import AppConfig from '../../config';
 
 export class NetworkService {
   constructor(baseUrl) {
-    this.baseUrl = baseUrl || process.env.VUE_APP_URL_BACK;
+    console.log('Iniciando servicio de verificación de conexión con el backend...');
+    console.log('Base URL:', baseUrl);
+    console.log('AppConfig:', AppConfig.API_ENDPOINT);
+    this.baseUrl = baseUrl || AppConfig.API_ENDPOINT;
     this.endpoint = '/receive-data';
+    console.log('URL del backend:', this.baseUrl);
   }
 
   async checkBackendConnection() {

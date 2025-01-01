@@ -5,10 +5,11 @@ El servicio ApiService se encarga de enviar mensajes a la API de MadyBot.
 
 import axios from 'axios';
 import MarkdownService from './MarkdownService';
+import AppConfig from '../../config/index.js';
 
 class ApiService {
   constructor(baseUrl) {
-    this.baseUrl = baseUrl || process.env.VUE_APP_URL_BACK;
+    this.baseUrl = baseUrl;
     this.endpoint = '/receive-data';
 
     // Configuración global de Axios
@@ -80,5 +81,7 @@ class ApiService {
 }
 
 // Exporta una instancia preconfigurada de ApiService
-const apiServiceInstance = new ApiService(process.env.VUE_APP_URL_BACK);
+console.log('[INFO] Valor de AppConfig:', AppConfig);
+console.log('[INFO] Valor de AppConfig.BASE_URL:', AppConfig.API_ENDPOINT);
+const apiServiceInstance = new ApiService(AppConfig.API_ENDPOINT);
 export default apiServiceInstance;

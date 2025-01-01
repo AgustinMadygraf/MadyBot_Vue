@@ -1,7 +1,13 @@
-// vue.config.js
+/*
+Path: vue.config.js
+Este script se encarga de cargar la configuración de la aplicación desde el archivo config.json
+*/
+
 const { defineConfig } = require('@vue/cli-service');
+const finalConfig = require('./src/config/configWrapperNode'); 
 
 module.exports = defineConfig({
+  publicPath: finalConfig.BASE_URL,
   transpileDependencies: ['mermaid', 'marked'],
 
   // Configurar <mermaid> como un elemento HTML válido
@@ -27,7 +33,5 @@ module.exports = defineConfig({
         'vue$': 'vue/dist/vue.esm-bundler.js',
       },
     },
-  },
-
-  publicPath: process.env.VUE_APP_BASE_URL || '/',
+  }
 });
