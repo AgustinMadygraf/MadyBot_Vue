@@ -6,6 +6,7 @@ El servicio MessageService se encarga de enviar mensajes al servicio ApiService.
 import ApiService from '../NetworkCheck/ApiService';
 import IdGenerationService from '../NetworkCheck/IdGenerationService';
 import AppConfig from '../../config';
+import logger from '../LogService';
 
 class MessageService {
   constructor(apiService, idService, options = {}) {
@@ -16,22 +17,26 @@ class MessageService {
       stream: AppConfig.STREAM_ENABLED,
       ...options,
     };
-  console.log('[DEBUG] Valor API_ENDPOINT desde config.json:', AppConfig.API_ENDPOINT);
+
+    logger.debug('[MessageService] Instancia creada con configuración:', {
+      apiEndpoint: AppConfig.API_ENDPOINT,
+      defaultOptions: this.defaultOptions,
+    });
   }
 
   async sendBotMessage(userMessage, options = {}) {
-    console.log('[INFO] Iniciando el envío del mensaje:', userMessage);
+    logger.info('[MessageService] Iniciando envío de mensaje:', userMessage);
 
     try {
       const datetime = this._getCurrentTimestamp();
-      console.log('[INFO] Fecha y hora actual:', datetime);
+      logger.debug('[MessageService] Timestamp actual:', datetime);
 
       const mergedOptions = {
         ...this.defaultOptions,
         ...options,
       };
 
-      console.log('[INFO] Opciones utilizadas:', mergedOptions);
+      logger.debug('[MessageService] Opciones utilizadas para la solicitud:', mergedOptions);
 
       const responseDict = await this.apiService.sendApiMessage(
         userMessage,
@@ -41,13 +46,13 @@ class MessageService {
       );
 
       const response = responseDict['normal'];
-      console.log('[INFO] Mensaje enviado exitosamente:', response);
+      logger.info('[MessageService] Mensaje enviado exitosamente. Respuesta:', response);
       return response;
     } catch (error) {
-      console.error('[ERROR MessageService] Error al enviar el mensaje:', error.message);
+      logger.error('[MessageService] Error al enviar el mensaje:', error.message);
       throw new Error('Hubo un problema al enviar el mensaje. Inténtalo de nuevo.');
     } finally {
-      console.log('[INFO] Operación de envío de mensaje finalizada.');
+      logger.info('[MessageService] Operación de envío de mensaje finalizada.');
     }
   }
 
