@@ -1,25 +1,22 @@
 /*
-Path: src/JS/NetworkCheck/ApiService.js
+Path: src/JS/NetworkCheck/ApiService.js (modificado)
 El servicio ApiService se encarga de enviar mensajes a la API de MadyBot.
 */
 
 import axios from 'axios';
-import MarkdownService from './MarkdownService';
-import AppConfig from '../../config/index.js';
+import HttpClientConfig from '../../config/HttpClientConfig';
+import MarkdownConverter from '../Utils/MarkdownConverter';
 import logger from '../LogService';
+import AppConfig from '../../config';
 
 class ApiService {
-  constructor(baseUrl) {
+  constructor(baseUrl = HttpClientConfig.baseURL) {
     logger.debug('[ApiService] Initializing with baseUrl:', baseUrl);
     this.baseUrl = baseUrl;
     this.endpoint = '/receive-data';
 
     // Configuración global de Axios
-    this.httpClient = axios.create({
-      baseURL: this.baseUrl,
-      headers: { 'Content-Type': 'application/json' },
-      timeout: 5000, // Tiempo de espera en milisegundos
-    });
+    this.httpClient = axios.create(HttpClientConfig);
 
     // Interceptor para manejo de errores de red
     this.httpClient.interceptors.response.use(
@@ -59,23 +56,20 @@ class ApiService {
 
   _processApiResponse(data) {
     try {
-      return {
-        normal: this._convertToHtml(data.response_MadyBot),
-        stream: this._convertToHtml(data.response_MadyBot_stream),
-      };
+      const normal = data.response_MadyBot
+        ? MarkdownConverter.convertToHtml(data.response_MadyBot)
+        : null;
+      const stream = data.response_MadyBot_stream
+        ? MarkdownConverter.convertToHtml(data.response_MadyBot_stream)
+        : null;
+  
+      return { normal, stream };
     } catch (conversionError) {
       logger.error('[ApiService] Error converting response to HTML:', conversionError.message);
       throw new Error('Error al procesar la respuesta de la API.');
     }
   }
-
-  _convertToHtml(markdown) {
-    if (!markdown) {
-      logger.warn('[ApiService] Markdown data is empty or invalid');
-      return null;
-    }
-    return MarkdownService.convertToHtml(markdown);
-  }
+  
 
   _handleNetworkError(error) {
     if (error.code === 'ECONNABORTED') {
@@ -83,12 +77,20 @@ class ApiService {
       return Promise.reject(new Error('La solicitud tardó demasiado en responder.'));
     }
     if (error.message === 'Network Error') {
-      logger.error('[ApiService] Network Error: Backend unavailable');
-      return Promise.reject(
-        new Error('El servidor no está disponible. Por favor, intente más tarde.')
-      );
+      logger.error('[ApiService] Network Error:', error.config?.url, error.message);
+      return Promise.reject(new Error('El servidor no está disponible. Por favor, intente más tarde.'));
     }
-    logger.error('[ApiService] HTTP error:', error.response?.status, error.message);
+    if (error.response) {
+      logger.error(
+        '[ApiService] HTTP error:',
+        error.response.status,
+        error.response.statusText,
+        'URL:',
+        error.config?.url
+      );
+    } else {
+      logger.error('[ApiService] Error desconocido:', error.message, error);
+    }
     return Promise.reject(error);
   }
 
@@ -99,5 +101,6 @@ class ApiService {
 
 // Exporta una instancia preconfigurada de ApiService
 logger.debug('[ApiService] AppConfig values:', AppConfig);
+logger.debug('[ApiService] API_ENDPOINT:', AppConfig.API_ENDPOINT);
 const apiServiceInstance = new ApiService(AppConfig.API_ENDPOINT);
 export default apiServiceInstance;
