@@ -56,31 +56,35 @@ Este componente es el encargado de mostrar el chatbot en la interfaz de usuario.
 import ChatBotComponent from '../JS/ChatBot/index.js';
 import emitter from '../JS/ChatBot/eventBus.js';
 import { EVENTS } from '../JS/ChatBot/constants.js';
+import LogService from '../JS/LogService.js';
 
 export default {
   extends: ChatBotComponent,
 
   created() {
     this.initializeEventListeners();
+    LogService.info("[ChatBot] Componente creado e inicializado.");
   },
 
   methods: {
     initializeEventListeners() {
       emitter.on(EVENTS.MESSAGE_SENT, this.scrollToBottom);
       emitter.on(EVENTS.ERROR_OCCURRED, this.handleError);
+      LogService.info("[ChatBot] Listeners de eventos inicializados.");
     },
 
     async handleMessage() {
       try {
         await this.sendChatMessage();
+        LogService.info("[ChatBot] Mensaje enviado correctamente.");
       } catch (error) {
-        console.error('Error sending message:', error);
+        LogService.error("[ChatBot] Error al enviar mensaje:", error.message);
         this.handleError(error.message);
       }
     },
 
     handleError(errorMsg) {
-      console.error("Error en ChatBot:", errorMsg);
+      LogService.error("[ChatBot] Error manejado:", errorMsg);
       this.scrollToBottom();
     },
 
@@ -89,15 +93,16 @@ export default {
         const container = this.$refs.messageContainer;
         if (container) {
           container.scrollTop = container.scrollHeight;
+          LogService.debug("[ChatBot] Scroll ajustado al final del contenedor.");
         }
       });
     },
   },
 
   beforeUnmount() {
-    // Clean up event listeners
     emitter.off(EVENTS.MESSAGE_SENT, this.scrollToBottom);
     emitter.off(EVENTS.ERROR_OCCURRED, this.handleError);
+    LogService.info("[ChatBot] Listeners de eventos eliminados antes de desmontar.");
   }
 };
 </script>

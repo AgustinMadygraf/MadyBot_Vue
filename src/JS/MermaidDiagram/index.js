@@ -1,30 +1,35 @@
-// Path: src/hooks/useMermaid.js
+/*
+Path: src/JS/MermaidDiagram/index.js
+Este script se encarga de inicializar y renderizar diagramas Mermaid en un contenedor HTML.
+*/
+
 import mermaid from 'mermaid';
 import { mermaidOptions } from './mermaidConfig';
+import LogService from '../LogService'; // Importa la clase LogService
 
 export const useMermaid = () => {
   const initMermaid = (containerId) => {
     const container = document.getElementById(containerId);
 
     if (!container) {
-      console.error(`El contenedor con ID "${containerId}" no se encontró.`);
+      LogService.error(`El contenedor con ID "${containerId}" no se encontró.`);
       return;
     }
 
     try {
       // Inicializar Mermaid con opciones configuradas
       mermaid.initialize(mermaidOptions);
-      console.log(`Versión de Mermaid: ${mermaid.version || 'indefinida'}`);
-      console.log('Contenido inicial del contenedor:', container.innerText);
+      LogService.info(`Versión de Mermaid: ${mermaid.version || 'indefinida'}`);
+      LogService.debug('Contenido inicial del contenedor:', container.innerText);
 
       // Renderizar Mermaid
       mermaid.init(undefined, container);
 
-      console.log('Mermaid se ha renderizado correctamente.');
-      console.log('Contenido después del renderizado:', container.innerHTML);
+      LogService.info('Mermaid se ha renderizado correctamente.');
+      LogService.debug('Contenido después del renderizado:', container.innerHTML);
     } catch (error) {
-      console.error('Error al renderizar Mermaid:', error.message);
-      console.error('Detalles del error:', error);
+      LogService.error('Error al renderizar Mermaid:', error.message);
+      LogService.debug('Detalles del error:', error);
     }
   };
 

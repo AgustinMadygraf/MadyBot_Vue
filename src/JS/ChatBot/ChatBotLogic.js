@@ -5,6 +5,7 @@ Este archivo contiene la lógica de la aplicación de chat de MadyBot.
 
 import ChatService from './ChatService.js';
 import emitter from './eventBus.js';
+import LogService from '../LogService.js'; // Importamos LogService
 
 export default {
   data() {
@@ -17,7 +18,7 @@ export default {
   },
   methods: {
     async sendChatMessage() {
-      console.log("[INFO] Iniciando proceso de envío de mensaje...");
+      LogService.info("[INFO] Iniciando proceso de envío de mensaje...");
       this.lastSentMessage = this.userMessage;
       const currentTime = new Date().toLocaleTimeString('es-ES', { hour12: false });
 
@@ -45,11 +46,13 @@ export default {
           time: new Date().toLocaleTimeString('es-ES', { hour12: false })
         });
 
+        LogService.info("Mensaje enviado correctamente.");
+        
         // Notificamos que el mensaje se ha enviado correctamente
         emitter.emit('messageSent');
-
       } catch (error) {
-        console.error("[ERROR MadyBot_Vue] Error al enviar el mensaje:", error.message);
+        LogService.error("[ERROR MadyBot_Vue] Error al enviar el mensaje:", error.message);
+        LogService.debug("Detalles del error:", error);
 
         // Agregamos un mensaje de error a la conversación
         this.messages.push({

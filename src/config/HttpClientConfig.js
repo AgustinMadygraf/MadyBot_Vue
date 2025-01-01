@@ -1,5 +1,5 @@
 /*
-Path: src/config/HttpClientConfig.js (creado)
+Path: src/config/HttpClientConfig.js
 Este archivo define la configuración global de Axios.
 */
 

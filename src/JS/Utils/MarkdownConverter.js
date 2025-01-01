@@ -1,5 +1,5 @@
 /*
-Path: src/JS/Utils/MarkdownConverter.js (creado)
+Path: src/JS/Utils/MarkdownConverter.js
 Este servicio se encarga de convertir texto Markdown a HTML.
 */
 

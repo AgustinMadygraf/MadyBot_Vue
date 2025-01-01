@@ -3,6 +3,8 @@ Path: src/JS/NetworkCheck/BrowserDataService.js
 El servicio BrowserDataService se encarga de obtener datos del navegador del usuario.
 */
 
+import LogService from '../LogService.js'; // Importamos LogService
+
 class BrowserDataService {
   /**
    * Obtiene los datos del navegador del usuario.
@@ -10,14 +12,17 @@ class BrowserDataService {
    */
   getBrowserData() {
     try {
-      return {
+      const browserData = {
         userAgent: this._getUserAgent(),
         screenResolution: this._getScreenResolution(),
         language: this._getLanguage(),
         platform: this._getPlatform(),
       };
+      LogService.info('[BrowserDataService] Datos del navegador obtenidos:', browserData);
+      return browserData;
     } catch (error) {
-      console.error('[ERROR BrowserDataService] Error al obtener datos del navegador:', error.message);
+      LogService.error('[ERROR BrowserDataService] Error al obtener datos del navegador:', error.message);
+      LogService.debug('Detalles del error:', error);
       throw new Error('No se pudo obtener la información del navegador.');
     }
   }
@@ -27,7 +32,9 @@ class BrowserDataService {
    * @returns {string} - El User-Agent del navegador.
    */
   _getUserAgent() {
-    return navigator.userAgent || 'User-Agent no disponible';
+    const userAgent = navigator.userAgent || 'User-Agent no disponible';
+    LogService.debug('[BrowserDataService] User-Agent:', userAgent);
+    return userAgent;
   }
 
   /**
@@ -35,7 +42,9 @@ class BrowserDataService {
    * @returns {string} - Resolución de pantalla en formato "ancho x alto".
    */
   _getScreenResolution() {
-    return `${window.screen.width}x${window.screen.height}`;
+    const resolution = `${window.screen.width}x${window.screen.height}`;
+    LogService.debug('[BrowserDataService] Resolución de pantalla:', resolution);
+    return resolution;
   }
 
   /**
@@ -43,7 +52,9 @@ class BrowserDataService {
    * @returns {string} - Idioma del navegador.
    */
   _getLanguage() {
-    return navigator.language || 'Idioma no disponible';
+    const language = navigator.language || 'Idioma no disponible';
+    LogService.debug('[BrowserDataService] Idioma:', language);
+    return language;
   }
 
   /**
@@ -51,7 +62,9 @@ class BrowserDataService {
    * @returns {string} - Plataforma del sistema operativo.
    */
   _getPlatform() {
-    return navigator.platform || 'Plataforma no disponible';
+    const platform = navigator.platform || 'Plataforma no disponible';
+    LogService.debug('[BrowserDataService] Plataforma:', platform);
+    return platform;
   }
 }
 
