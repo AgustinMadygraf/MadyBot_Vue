@@ -20,7 +20,7 @@ const getApiEndpoint = async () => {
   } catch (error) {
     LogService.warn('[HttpClientConfig] Fallback: Obteniendo API_ENDPOINT desde PHP...');
     try {
-      const response = await axios.get('http://localhost/MadyBot_Vue/public/get_data.php');
+      const response = await axios.get('http://localhost/MadyBot_PHP/get_data.php');
 
       // Validar si el endpoint está definido
       if (!response.data.endpoint) {

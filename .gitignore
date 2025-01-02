@@ -25,3 +25,4 @@ pnpm-debug.log*
 .env.production
 .env.development
 src/config/config.json
+src/docs/00-Prompt-for-ProjectAnalysis.md
