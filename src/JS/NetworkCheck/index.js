@@ -3,7 +3,7 @@ Path: src/JS/NetworkCheck/index.js
 
 */
 
-import { getGlobalEndpoint } from '../../config/HttpClientConfig.js';
+import { getGlobalEndpoint, setGlobalEndpoint } from '../../config/HttpClientConfig.js';
 import MessageService from '../ChatBot/MessageService';
 import AppConfig from '../../config';
 import logger from '../LogService';
@@ -12,7 +12,6 @@ export class NetworkService {
   constructor(baseUrl) {
     this.baseUrl = baseUrl || getGlobalEndpoint() || AppConfig.API_ENDPOINT;
     this.endpoint = '/receive-data';
-
     logger.debug('[NetworkService] Servicio iniciado con configuración:', {
       baseUrl: this.baseUrl,
       endpoint: this.endpoint,
@@ -36,7 +35,10 @@ export class NetworkService {
       });
 
       if (response.ok) {
+        // Ajuste tras la validación exitosa
+        setGlobalEndpoint(this.baseUrl);
         logger.info('[NetworkService] Conexión exitosa con el backend');
+
         await MessageService.sendBotMessage('Hola!');
         return true;
       } else {
@@ -48,7 +50,7 @@ export class NetworkService {
       return { error: true, message: error.message };
     }
   }
-
+  
   _getRequestPayload() {
     const payload = {
       prompt_user: 'Probando conexión con el backend',
