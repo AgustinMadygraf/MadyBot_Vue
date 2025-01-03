@@ -8,7 +8,13 @@ import MessageService from '../ChatBot/MessageService';
 import AppConfig from '../../config';
 import logger from '../LogService';
 
+/**
+ * Servicio encargado de verificar la conexión con el backend y gestionar la URL global.
+ */
 export class NetworkService {
+  /**
+   * @param {string} [baseUrl] - URL base del servidor a verificar.
+   */
   constructor(baseUrl) {
     this.baseUrl = baseUrl || getGlobalEndpoint() || AppConfig.API_ENDPOINT;
     this.endpoint = '/receive-data';
@@ -18,6 +24,10 @@ export class NetworkService {
     });
   }
 
+  /**
+   * Verifica la conexión con el backend realizando una solicitud POST.
+   * @returns {Promise<boolean|Object>} Retorna true en caso de éxito, false en caso de fallo, o un objeto de error.
+   */
   async checkBackendConnection() {
     logger.info('[NetworkService] Iniciando verificación de conexión con el backend');
 
@@ -50,7 +60,12 @@ export class NetworkService {
       return { error: true, message: error.message };
     }
   }
-  
+
+  /**
+   * Genera el payload de la solicitud para la verificación de conexión.
+   * @private
+   * @returns {Object} - Objeto con los datos a enviar en la solicitud.
+   */
   _getRequestPayload() {
     const payload = {
       prompt_user: 'Probando conexión con el backend',
