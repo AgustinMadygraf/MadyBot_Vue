@@ -1,4 +1,9 @@
-// Path: src/JS/NetworkCheck/interfaces/IHttpClient.js
+/*
+Path: src/JS/NetworkCheck/interfaces/IHttpClient.js
+
+*/
+
+/* eslint-disable */
 
 export default class IHttpClient {
     /**

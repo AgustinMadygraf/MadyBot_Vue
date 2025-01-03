@@ -10,7 +10,7 @@ class AxiosHttpClient extends IHttpClient {
   constructor() {
     super();
     this.client = axios.create({
-      baseURL: 'http://localhost.com', // Replace with your actual base URL
+      baseURL: 'http://localhost.com', // modificar para que sea configurable desde config.json
       headers: {
         'Content-Type': 'application/json',
       },

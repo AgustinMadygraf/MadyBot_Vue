@@ -1,4 +1,7 @@
-// Path: src/utils/mermaidConfig.js
+/*
+Path: src/utils/mermaidConfig.js
+
+*/
 
 export const mermaidOptions = {
   startOnLoad: false,
