@@ -30,7 +30,7 @@ const initHttpClientConfig = async () => {
   return {
     baseURL,
     headers: { 'Content-Type': 'application/json' },
-    timeout: 5000,
+    timeout: 50,
   };
 };
 
