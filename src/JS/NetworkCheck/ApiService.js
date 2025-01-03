@@ -4,12 +4,15 @@ import axios from 'axios';
 import initHttpClientConfig from '../../config/HttpClientConfig';
 import MarkdownConverter from '../Utils/MarkdownConverter';
 import logger from '../LogService';
+import AppConfig from '../../config';
 
 class ApiService {
   constructor() {
     this.httpClient = null;
     this.isInitialized = false;
-    this.endpoint = '/receive-data';
+    this.endpoint = `${AppConfig.API_ENDPOINT}/receive-data`;
+    logger.debug('[ApiService] Instancia creada');
+    logger.debug('[ApiService] Endpoint de la API:', this.endpoint);
   }
 
   // Método asíncrono para inicializar la instancia de axios con la configuración correcta
