@@ -7,6 +7,8 @@ import AppConfig from '../config';
 import LogService from '../JS/LogService.js';
 import axios from 'axios';
 
+let globalEndpoint = null;
+
 const checkPhpEndpointHealth = async () => {
   try {
     LogService.info('[HttpClientConfig] Verificando salud de PHP_ENDPOINT...');
@@ -56,3 +58,12 @@ const initHttpClientConfig = async () => {
 };
 
 export default initHttpClientConfig;
+
+export function setGlobalEndpoint(newEndpoint) {
+  globalEndpoint = newEndpoint;
+  LogService.info('[HttpClientConfig] globalEndpoint actualizado a:', newEndpoint);
+}
+
+export function getGlobalEndpoint() {
+  return globalEndpoint;
+}

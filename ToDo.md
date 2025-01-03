@@ -1,142 +1,17 @@
-#### **6. Reducir el Acoplamiento en `HttpClientConfig`**
+# Tareas para implementar la mejora de HttpClientConfig
 
-**6.1. Modificar `HttpClientConfig` para depender de `ILogger`**
+1. Crear variable global y lógica de actualización (Responsabilidad Única - SRP)
+   1.1. [src/config/HttpClientConfig.js](src/config/HttpClientConfig.js): Agregar la variable `globalEndpoint` y un método `setGlobalEndpoint`.
+   1.2. Comprobar que se exporte correctamente ejecutando el proyecto y revisando logs sin errores.
 
-- **Subtarea 6.1.1: Ajustar `HttpClientConfig.js` para usar `ILogger`**
-  - **Archivo a modificar**: `src/config/HttpClientConfig.js`
-  - **Acción**: Cambiar las dependencias para que `HttpClientConfig` reciba una instancia que implemente `ILogger` en lugar de depender directamente de `LogService`.
+2. Inyectar variable en NetworkService (Abierto/Cerrado - OCP)
+   2.1. [src/JS/NetworkCheck/index.js](src/JS/NetworkCheck/index.js): Refactorizar el constructor de [`NetworkService`](src/JS/NetworkCheck/index.js) para usar `globalEndpoint` en lugar de `AppConfig.API_ENDPOINT`.
+   2.2. Comprobar que `checkBackendConnection()` funcione: revisar logs de conexión exitosa.
 
-- **Subtarea 6.1.2: Verificar la modificación de `HttpClientConfig.js`**
-  - **Verificación**: Asegurarse de que `HttpClientConfig` ahora utiliza una instancia de `ILogger` y que no importa directamente `LogService`.
+3. Ajustar responsabilidad de asignación tras validación (Inversión de Dependencias - DIP)
+   3.1. [src/JS/NetworkCheck/index.js](src/JS/NetworkCheck/index.js): Cuando la conexión sea exitosa, llamar a `setGlobalEndpoint` para definir la nueva URL.
+   3.2. Verificar la respuesta: el nuevo endpoint debe reflejarse en el debugger o logs.
 
----
-
-#### **7. Implementar la Inyección de Dependencias en `NetworkService`**
-
-**7.1. Modificar el constructor de `NetworkService` para aceptar dependencias**
-
-- **Subtarea 7.1.1: Modificar el constructor de `NetworkService.js`**
-  - **Archivo a modificar**: `src/JS/NetworkCheck/NetworkService.js`
-  - **Acción**: Ajustar el constructor para recibir instancias de `MessageService`, `AppConfig` y `ILogger` a través de parámetros en lugar de importarlos directamente.
-
-- **Subtarea 7.1.2: Verificar la modificación del constructor en `NetworkService.js`**
-  - **Verificación**: Comprobar que `NetworkService` ya no importa directamente `MessageService`, `AppConfig` y `logger`, y que los recibe como dependencias.
-
-**7.2. Crear un contenedor de dependencias**
-
-- **Subtarea 7.2.1: Crear archivo `DependencyContainer.js`**
-  - **Archivo a crear**: `src/JS/NetworkCheck/DependencyContainer.js`
-  - **Acción**: Implementar un contenedor que gestione la creación e inyección de dependencias para las clases `ApiService`, `HttpClientConfig`, y `NetworkService`.
-
-- **Subtarea 7.2.2: Verificar la creación de `DependencyContainer.js`**
-  - **Verificación**: Asegurarse de que `DependencyContainer.js` exporta correctamente las instancias configuradas de las clases con sus dependencias inyectadas.
-
----
-
-#### **8. Separar la Lógica de Verificación de Endpoints**
-
-**8.1. Crear un módulo para la verificación de endpoints**
-
-- **Subtarea 8.1.1: Crear archivo `EndpointChecker.js`**
-  - **Archivo a crear**: `src/JS/NetworkCheck/EndpointChecker.js`
-  - **Acción**: Implementar una clase o conjunto de funciones que se encarguen exclusivamente de verificar la salud de los endpoints.
-
-- **Subtarea 8.1.2: Verificar la creación de `EndpointChecker.js`**
-  - **Verificación**: Comprobar que `EndpointChecker.js` exporta correctamente las funciones o clases para la verificación de endpoints.
-
-**8.2. Modificar `HttpClientConfig` para utilizar `EndpointChecker`**
-
-- **Subtarea 8.2.1: Inyectar `EndpointChecker` en `HttpClientConfig.js`**
-  - **Archivo a modificar**: `src/config/HttpClientConfig.js`
-  - **Acción**: Ajustar `HttpClientConfig` para utilizar `EndpointChecker` en lugar de manejar la verificación internamente.
-
-- **Subtarea 8.2.2: Verificar la modificación de `HttpClientConfig.js`**
-  - **Verificación**: Asegurarse de que `HttpClientConfig` utiliza `EndpointChecker` correctamente para la verificación de endpoints.
-
----
-
-#### **9. Refactorizar `NetworkService` para Mayor Cohesión**
-
-**9.1. Crear una clase `PayloadGenerator`**
-
-- **Subtarea 9.1.1: Crear archivo `PayloadGenerator.js`**
-  - **Archivo a crear**: `src/JS/NetworkCheck/PayloadGenerator.js`
-  - **Acción**: Implementar una clase o función que se encargue exclusivamente de generar el payload para las solicitudes.
-
-- **Subtarea 9.1.2: Verificar la creación de `PayloadGenerator.js`**
-  - **Verificación**: Comprobar que `PayloadGenerator.js` exporta correctamente la clase o función para la generación de payload.
-
-**9.2. Modificar `NetworkService` para utilizar `PayloadGenerator`**
-
-- **Subtarea 9.2.1: Inyectar `PayloadGenerator` en `NetworkService.js`**
-  - **Archivo a modificar**: `src/JS/NetworkCheck/NetworkService.js`
-  - **Acción**: Ajustar `NetworkService` para utilizar `PayloadGenerator` en lugar de generar el payload internamente.
-
-- **Subtarea 9.2.2: Verificar la modificación de `NetworkService.js`**
-  - **Verificación**: Asegurarse de que `NetworkService` utiliza `PayloadGenerator` correctamente para la generación de payload y que ya no contiene el método `_getRequestPayload`.
-
----
-
-#### **10. Mejorar el Logging a través de Abstracciones**
-
-**10.1. Modificar `ApiService` para usar `ILogger`**
-
-- **Subtarea 10.1.1: Actualizar `ApiService.js` para recibir `ILogger`**
-  - **Archivo a modificar**: `src/JS/NetworkCheck/ApiService.js`
-  - **Acción**: Ajustar `ApiService` para recibir una instancia de `ILogger` en lugar de importar directamente `LogService`.
-
-- **Subtarea 10.1.2: Verificar la modificación en `ApiService.js`**
-  - **Verificación**: Asegurarse de que `ApiService` ahora utiliza una instancia de `ILogger` correctamente.
-
-**10.2. Modificar `HttpClientConfig` para usar `ILogger`**
-
-- **Subtarea 10.2.1: Actualizar `HttpClientConfig.js` para recibir `ILogger`**
-  - **Archivo a modificar**: `src/config/HttpClientConfig.js`
-  - **Acción**: Ajustar `HttpClientConfig` para recibir una instancia de `ILogger` en lugar de importar directamente `LogService`.
-
-- **Subtarea 10.2.2: Verificar la modificación en `HttpClientConfig.js`**
-  - **Verificación**: Comprobar que `HttpClientConfig` utiliza una instancia de `ILogger` correctamente.
-
-**10.3. Modificar `NetworkService` para usar `ILogger`**
-
-- **Subtarea 10.3.1: Actualizar `NetworkService.js` para recibir `ILogger`**
-  - **Archivo a modificar**: `src/JS/NetworkCheck/NetworkService.js`
-  - **Acción**: Ajustar `NetworkService` para recibir una instancia de `ILogger` en lugar de importar directamente `logger`.
-
-- **Subtarea 10.3.2: Verificar la modificación en `NetworkService.js`**
-  - **Verificación**: Asegurarse de que `NetworkService` utiliza una instancia de `ILogger` correctamente.
-
----
-
-#### **11. Aumentar la Extensibilidad de `ApiService`**
-
-**11.1. Crear una clase abstracta `AbstractApiService`**
-
-- **Subtarea 11.1.1: Crear archivo `AbstractApiService.js`**
-  - **Archivo a crear**: `src/JS/NetworkCheck/AbstractApiService.js`
-  - **Acción**: Crear una clase base abstracta que define la interfaz de `ApiService` y permite su extensión.
-
-- **Subtarea 11.1.2: Verificar la creación de `AbstractApiService.js`**
-  - **Verificación**: Comprobar que `AbstractApiService.js` define correctamente la clase abstracta con los métodos necesarios.
-
-**11.2. Crear una implementación concreta de `ApiService`**
-
-- **Subtarea 11.2.1: Crear archivo `ConcreteApiService.js`**
-  - **Archivo a crear**: `src/JS/NetworkCheck/ConcreteApiService.js`
-  - **Acción**: Implementar una clase que extienda `AbstractApiService` y proporcione las implementaciones específicas.
-
-- **Subtarea 11.2.2: Verificar la creación de `ConcreteApiService.js`**
-  - **Verificación**: Asegurarse de que `ConcreteApiService.js` exporta la clase que extiende `AbstractApiService` y que implementa todos los métodos requeridos.
-
----
-
-#### **12. Refactorizar Configuraciones para Mayor Flexibilidad**
-
-**12.1. Asegurar que `HttpClientConfig` cumple con `IAppConfig`**
-
-- **Subtarea 12.1.1: Revisar y ajustar `HttpClientConfig.js`**
-  - **Archivo a modificar**: `src/config/HttpClientConfig.js`
-  - **Acción**: Asegurar que las configuraciones manejadas en `HttpClientConfig` están alineadas con la interfaz `IAppConfig`.
-
-- **Subtarea 12.1.2: Verificar la adherencia de `HttpClientConfig.js` a `IAppConfig`**
-  - **Verificación**: Comprobar que todas las propiedades necesarias según `IAppConfig` están correctamente implementadas en `HttpClientConfig.js`.
+4. Revisar y probar integración general
+   4.1. Asegurarse de que se mantiene la lógica previa (Liskov - LSP).
+   4.2. Ejecutar pruebas unitarias y verificar que no haya regresiones, especialmente en `checkBackendConnection()` y otros métodos que usen la conexión.

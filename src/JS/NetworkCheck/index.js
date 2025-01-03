@@ -3,13 +3,14 @@ Path: src/JS/NetworkCheck/index.js
 
 */
 
+import { getGlobalEndpoint } from '../../config/HttpClientConfig.js';
 import MessageService from '../ChatBot/MessageService';
 import AppConfig from '../../config';
 import logger from '../LogService';
 
 export class NetworkService {
   constructor(baseUrl) {
-    this.baseUrl = baseUrl || AppConfig.API_ENDPOINT;
+    this.baseUrl = baseUrl || getGlobalEndpoint() || AppConfig.API_ENDPOINT;
     this.endpoint = '/receive-data';
 
     logger.debug('[NetworkService] Servicio iniciado con configuración:', {
