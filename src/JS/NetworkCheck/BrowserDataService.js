@@ -3,7 +3,7 @@ Path: src/JS/NetworkCheck/BrowserDataService.js
 El servicio BrowserDataService se encarga de obtener datos del navegador del usuario.
 */
 
-import LogService from '../LogService.js'; // Importamos LogService
+import LogService from '../LogService.js';
 
 class BrowserDataService {
   /**

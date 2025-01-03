@@ -2,6 +2,18 @@ import AppConfig from '../config';
 import LogService from '../JS/LogService.js';
 import axios from 'axios';
 
+const checkPhpEndpointHealth = async () => {
+  try {
+    LogService.info('[HttpClientConfig] Verificando salud de PHP_ENDPOINT...');
+    await axios.get(`${AppConfig.PHP_ENDPOINT}/health-check`);
+    LogService.info('[HttpClientConfig] PHP_ENDPOINT está saludable.');
+    return true;
+  } catch (error) {
+    LogService.warn('[HttpClientConfig] PHP_ENDPOINT no está saludable:', error.message);
+    return false;
+  }
+};
+
 const getApiEndpoint = async () => {
   try {
     LogService.info('[HttpClientConfig] Intentando usar API_ENDPOINT de config.json');
@@ -11,6 +23,10 @@ const getApiEndpoint = async () => {
   } catch (error) {
     LogService.warn('[HttpClientConfig] Fallback: Obteniendo API_ENDPOINT desde PHP...');
     try {
+      const isPhpHealthy = await checkPhpEndpointHealth();
+      if (!isPhpHealthy) {
+        throw new Error('PHP_ENDPOINT no está saludable');
+      }
       const response = await axios.get(AppConfig.PHP_ENDPOINT);
       if (!response.data.endpoint) {
         LogService.warn('[HttpClientConfig] El campo "endpoint" está undefined en la respuesta de PHP. Usando valor por defecto.');
@@ -30,7 +46,7 @@ const initHttpClientConfig = async () => {
   return {
     baseURL,
     headers: { 'Content-Type': 'application/json' },
-    timeout: 50,
+    timeout: 5000,
   };
 };
 
