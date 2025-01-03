@@ -1,6 +1,7 @@
-// Path: src/config/index.js
+/*
+Path: src/config/index.js
 
-/* eslint-disable */
+*/
 
 import config from './config.json';
 import IAppConfig from './interfaces/IAppConfig';
@@ -16,15 +17,7 @@ const finalConfig = {
 
 // Validar que finalConfig implementa todas las propiedades de IAppConfig
 const validateConfig = (config) => {
-  const requiredProperties = [
-    'API_ENDPOINT_DEV',
-    'API_ENDPOINT_PROD',
-    'PHP_ENDPOINT_DEV',
-    'PHP_ENDPOINT_PROD',
-    'STREAM_ENABLED',
-    'BASE_URL_DEV',
-    'BASE_URL_PROD',
-  ];
+  const requiredProperties = Object.keys(new IAppConfig());
 
   requiredProperties.forEach((property) => {
     if (!(property in config)) {
