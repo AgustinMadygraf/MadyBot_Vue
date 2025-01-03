@@ -1,38 +1,3 @@
-#### **1. Crear Interfaces para Abstraer Dependencias**
-
-**1.1. Crear una interfaz para el cliente HTTP**
-
-- **Subtarea 1.1.1: Crear archivo de interfaz `IHttpClient.js`**
-  - **Archivo a crear**: `src/JS/NetworkCheck/interfaces/IHttpClient.js`
-  - **Acción**: Definir una interfaz `IHttpClient` que declare los métodos utilizados por `ApiService` (por ejemplo, `post`, `get`).
-
-- **Subtarea 1.1.2: Verificar la creación de `IHttpClient.js`**
-  - **Verificación**: Asegurarse de que `IHttpClient.js` exporta correctamente la interfaz con los métodos necesarios.
-
-**1.2. Crear una interfaz para el servicio de logging**
-
-- **Subtarea 1.2.1: Crear archivo de interfaz `ILogger.js`**
-  - **Archivo a crear**: `src/JS/NetworkCheck/interfaces/ILogger.js`
-  - **Acción**: Definir una interfaz `ILogger` que declare métodos como `debug`, `info`, `warn`, `error`.
-
-- **Subtarea 1.2.2: Verificar la creación de `ILogger.js`**
-  - **Verificación**: Comprobar que `ILogger.js` exporta correctamente la interfaz con los métodos necesarios.
-
----
-
-#### **2. Abstraer el Servicio de Logging**
-
-**2.1. Modificar `LogService` para implementar `ILogger`**
-
-- **Subtarea 2.1.1: Ajustar `LogService.js` para implementar `ILogger`**
-  - **Archivo a modificar**: `src/JS/LogService.js`
-  - **Acción**: Asegurar que `LogService` implementa todos los métodos definidos en `ILogger`.
-
-- **Subtarea 2.1.2: Verificar la implementación de `ILogger` en `LogService.js`**
-  - **Verificación**: Comprobar que `LogService.js` cumple con la interfaz `ILogger` y exporta correctamente la implementación.
-
----
-
 #### **3. Implementar la Inversión de Dependencias (DIP) para `ApiService`**
 
 **3.1. Modificar `ApiService` para depender de la interfaz `IHttpClient`**

@@ -5,9 +5,11 @@ Este script se encarga de enviar los logs al servidor.
 
 import log from 'loglevel';
 import prefix from 'loglevel-plugin-prefix';
+import ILogger from './NetworkCheck/interfaces/ILogger';
 
-class LogService {
+class LogService extends ILogger {
   constructor() {
+    super();
     const env = process.env.NODE_ENV; // "development" o "production"
     this.logger = log;
 
