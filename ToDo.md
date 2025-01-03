@@ -1,25 +1,3 @@
-#### **5. Abstraer el Servicio de Configuración**
-
-**5.1. Crear una interfaz para la configuración de la aplicación**
-
-- **Subtarea 5.1.1: Crear archivo de interfaz `IAppConfig.js`**
-  - **Archivo a crear**: `src/config/interfaces/IAppConfig.js`
-  - **Acción**: Definir una interfaz `IAppConfig` que describa la estructura esperada de la configuración de la aplicación.
-
-- **Subtarea 5.1.2: Verificar la creación de `IAppConfig.js`**
-  - **Verificación**: Comprobar que `IAppConfig.js` exporta correctamente la interfaz con las propiedades necesarias.
-
-**5.2. Modificar `config/index.js` para adherirse a `IAppConfig`**
-
-- **Subtarea 5.2.1: Ajustar `config/index.js` para cumplir con `IAppConfig`**
-  - **Archivo a modificar**: `src/config/index.js`
-  - **Acción**: Asegurar que `finalConfig` implementa todas las propiedades definidas en `IAppConfig` y valida la configuración.
-
-- **Subtarea 5.2.2: Verificar la modificación de `config/index.js`**
-  - **Verificación**: Comprobar que `finalConfig` cumple con la interfaz `IAppConfig` y que no faltan propiedades esenciales.
-
----
-
 #### **6. Reducir el Acoplamiento en `HttpClientConfig`**
 
 **6.1. Modificar `HttpClientConfig` para depender de `ILogger`**
@@ -162,25 +140,3 @@
 
 - **Subtarea 12.1.2: Verificar la adherencia de `HttpClientConfig.js` a `IAppConfig`**
   - **Verificación**: Comprobar que todas las propiedades necesarias según `IAppConfig` están correctamente implementadas en `HttpClientConfig.js`.
-
----
-
-#### **13. Asegurar la Testabilidad mediante Mocking de Dependencias**
-
-**13.1. Configurar el entorno de pruebas para soportar inyección de dependencias**
-
-- **Subtarea 13.1.1: Crear archivo de configuración para pruebas `setupTests.js`**
-  - **Archivo a crear**: `tests/setupTests.js`
-  - **Acción**: Configurar un entorno de pruebas que permita inyectar mocks para las interfaces `IHttpClient`, `ILogger`, etc.
-
-- **Subtarea 13.1.2: Verificar la configuración de `setupTests.js`**
-  - **Verificación**: Asegurarse de que el entorno de pruebas puede inyectar y utilizar mocks para las dependencias.
-
-**13.2. Escribir pruebas unitarias para `ApiService` utilizando mocks**
-
-- **Subtarea 13.2.1: Crear archivo de pruebas `ApiService.test.js`**
-  - **Archivo a crear**: `tests/ApiService.test.js`
-  - **Acción**: Implementar pruebas unitarias para `ApiService` utilizando mocks para `IHttpClient` y `ILogger`.
-
-- **Subtarea 13.2.2: Verificar las pruebas unitarias de `ApiService.test.js`**
-  - **Verificación**: Ejecutar las pruebas para asegurarse de que pasan correctamente y que las dependencias están siendo mockeadas adecuadamente.
