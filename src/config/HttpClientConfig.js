@@ -1,3 +1,8 @@
+/*
+Path: src/config/HttpClientConfig.js
+
+*/
+
 import AppConfig from '../config';
 import LogService from '../JS/LogService.js';
 import axios from 'axios';

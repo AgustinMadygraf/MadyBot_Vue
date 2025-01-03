@@ -1,4 +1,7 @@
-// Path: src/JS/NetworkCheck/ApiService.js
+/*
+Path: src/JS/NetworkCheck/ApiService.js
+
+*/
 
 import logger from '../LogService';
 import AppConfig from '../../config';

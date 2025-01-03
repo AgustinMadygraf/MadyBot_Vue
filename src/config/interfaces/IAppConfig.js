@@ -1,4 +1,7 @@
-// Path: src/config/interfaces/IAppConfig.js
+/*
+Path: src/config/interfaces/IAppConfig.js
+
+*/
 
 export default class IAppConfig {
     /**
