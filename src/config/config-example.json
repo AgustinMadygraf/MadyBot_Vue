@@ -1,10 +1,12 @@
 {
-  "_PATH:": "src/config/config-example.json",
+  "_PATH:": "src/config/config.json",
   "API_ENDPOINT_DEV": "http://localhost:5000",
-  "API_ENDPOINT_PROD": "https://10.176.61.55:5000",
   "PHP_ENDPOINT_DEV": "http://localhost/MadyBot_PHP/public/get_data.php",
+  "BASE_URL_DEV": "/",
+
+  "API_ENDPOINT_PROD": "https://10.176.61.55:5000",
   "PHP_ENDPOINT_PROD": "../../MadyBot_PHP/public/get_data.php",
   "STREAM_ENABLED": false,
-  "BASE_URL_DEV": "/",
+  
   "BASE_URL_PROD": "/MadyBot_Vue/dist/"
 }
