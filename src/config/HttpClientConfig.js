@@ -53,7 +53,7 @@ const initHttpClientConfig = async () => {
   return {
     baseURL,
     headers: { 'Content-Type': 'application/json' },
-    timeout: 5000,
+    timeout: 50,
   };
 };
 
@@ -62,6 +62,8 @@ export default initHttpClientConfig;
 export function setGlobalEndpoint(newEndpoint) {
   globalEndpoint = newEndpoint;
   LogService.info('[HttpClientConfig] globalEndpoint actualizado a:', newEndpoint);
+  console.log('globalEndpoint:', globalEndpoint);
+  console.log('newEndpoint:', newEndpoint);
 }
 
 export function getGlobalEndpoint() {
