@@ -1,3 +1,8 @@
+/*
+Path: src/config/index.js
+
+*/
+
 import config from './config.json';
 
 const isProd = process.env.NODE_ENV === 'production';

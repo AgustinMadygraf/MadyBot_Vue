@@ -1,4 +1,5 @@
 {
+  "_PATH:": "src/config/config-example.json",
   "API_ENDPOINT_DEV": "http://localhost:5000",
   "API_ENDPOINT_PROD": "https://10.176.61.55:5000",
   "PHP_ENDPOINT_DEV": "http://localhost/MadyBot_PHP/public/get_data.php",
