@@ -59,7 +59,6 @@ function getCallerFileStack() {
 }
 
 function parseFileAndLine(stackLine) {
-  // Regex para extraer "src/JS/NetworkCheck/ApiService.js" y la línea
   const regex = /webpack-internal:\/\/\/\.(\/.*?):(\d+):\d+/;
   const match = stackLine.match(regex);
 
