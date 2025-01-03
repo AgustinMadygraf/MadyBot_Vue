@@ -1,5 +1,6 @@
 {
-  "API_ENDPOINT": "http://192.168.0.118:5000",
+  "API_ENDPOINT": "https://10.176.61.55:5000",
+  "PHP_ENDPOINT": "http://localhost/MadyBot_PHP/public/get_data.php",
   "STREAM_ENABLED": false,
   "BASE_URL_DEV": "/",
   "BASE_URL_PROD": "/MadyBot_Vue/dist/"
