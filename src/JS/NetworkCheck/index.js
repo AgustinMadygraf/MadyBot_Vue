@@ -1,10 +1,9 @@
 /*
 Path: src/JS/NetworkCheck/index.js
-
 */
 
-import { getGlobalEndpoint, setGlobalEndpoint } from './UrlConfig.js';
-import MessageService from '../ChatBot/MessageService';
+import { getGlobalEndpoint } from './UrlConfig.js';
+import { checkBackendConnection } from './ConnectionChecker.js';
 import AppConfig from '../../config';
 import logger from '../LogService';
 import axios from 'axios';
@@ -23,43 +22,6 @@ export class NetworkService {
       baseUrl: this.baseUrl,
       endpoint: this.endpoint,
     });
-  }
-
-  /**
-   * Verifica la conexión con el backend realizando una solicitud POST.
-   * @returns {Promise<boolean|Object>} Retorna true en caso de éxito, false en caso de fallo, o un objeto de error.
-   */
-  async checkBackendConnection() {
-    logger.info('[NetworkService] Iniciando verificación de conexión con el backend');
-
-    try {
-      const url = `${this.baseUrl}${this.endpoint}`;
-      logger.debug('[NetworkService] URL completa para la verificación:', url);
-
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(this._getRequestPayload()),
-      });
-
-      if (response.ok) {
-        // Ajuste tras la validación exitosa
-        setGlobalEndpoint(this.baseUrl);
-        logger.info('[NetworkService] Conexión exitosa con el backend');
-
-        await MessageService.sendBotMessage('Hola!');
-        return true;
-      } else {
-        logger.warn('[NetworkService] Conexión fallida con el backend. Código de estado:', response.status);
-        return false;
-      }
-    } catch (error) {
-      logger.error('[NetworkService] Error durante la verificación de conexión:', error.message);
-      return { error: true, message: error.message };
-    }
   }
 
   /**
@@ -168,7 +130,7 @@ export class NetworkService {
         logger.warn('[NetworkService] PHP_ENDPOINT no está saludable durante la inicialización.');
       }
 
-      const backendConnected = await this.checkBackendConnection();
+      const backendConnected = await checkBackendConnection(this.baseUrl, this.endpoint, this._getRequestPayload.bind(this));
       if (backendConnected === true) {
         logger.info('[NetworkService] Inicialización de conexión completada con éxito.');
         return true;
