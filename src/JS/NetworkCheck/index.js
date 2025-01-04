@@ -6,6 +6,7 @@ import { getGlobalEndpoint } from './UrlConfig.js';
 import { checkBackendConnection } from './ConnectionChecker.js';
 import { checkPhpEndpointHealth } from './PhpHealthChecker.js';
 import { getApiEndpoint } from './ApiEndpointProvider.js';
+import { initializeHttpClientConfig } from './HttpClientInitializer.js';
 import AppConfig from '../../config';
 import logger from '../LogService';
 
@@ -50,24 +51,6 @@ export class NetworkService {
   }
 
   /**
-   * Inicializa la configuración del cliente HTTP utilizando el API_ENDPOINT obtenido.
-   * @returns {Promise<Object>} Configuración para el cliente HTTP.
-   */
-  async initializeHttpClientConfig() {
-    try {
-      const baseURL = await getApiEndpoint();
-      return {
-        baseURL,
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 50,
-      };
-    } catch (error) {
-      logger.error('[NetworkService] Error al inicializar la configuración del cliente HTTP:', error.message);
-      throw error;
-    }
-  }
-
-  /**
    * Método coordinador que gestiona la secuencia de inicialización de la conexión.
    * @returns {Promise<boolean>} Retorna true si la inicialización es exitosa, de lo contrario, false.
    */
@@ -98,6 +81,14 @@ export class NetworkService {
       logger.error('[NetworkService] Error durante la inicialización de conexión:', error.message);
       return false;
     }
+  }
+
+  /**
+   * Inicializa la configuración del cliente HTTP.
+   * @returns {Promise<Object>} Configuración para el cliente HTTP.
+   */
+  async initializeHttpClientConfig() {
+    return await initializeHttpClientConfig();
   }
 }
 

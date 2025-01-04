@@ -1,8 +1,3 @@
-#### Tarea 5: Crear un módulo para la inicialización de la configuración del cliente HTTP
-- **Subtarea 5.1:** Crear un archivo `HttpClientInitializer.js` en `NetworkCheck`
-- **Subtarea 5.2:** Mover la función `initializeHttpClientConfig` a `HttpClientInitializer.js`
-- **Subtarea 5.3:** Actualizar las importaciones en `index.js` para usar `HttpClientInitializer.js`
-
 #### Tarea 6: Crear un módulo para la inicialización de la conexión
 - **Subtarea 6.1:** Crear un archivo `ConnectionInitializer.js` en `NetworkCheck`
 - **Subtarea 6.2:** Mover la función `initializeConnection` a `ConnectionInitializer.js`
