@@ -3,10 +3,8 @@ Path: src/JS/NetworkCheck/index.js
 */
 
 import { getGlobalEndpoint } from './UrlConfig.js';
-import { checkBackendConnection } from './ConnectionChecker.js';
-import { checkPhpEndpointHealth } from './PhpHealthChecker.js';
-import { getApiEndpoint } from './ApiEndpointProvider.js';
 import { initializeHttpClientConfig } from './HttpClientInitializer.js';
+import { initializeConnection } from './ConnectionInitializer.js';
 import AppConfig from '../../config';
 import logger from '../LogService';
 
@@ -51,44 +49,19 @@ export class NetworkService {
   }
 
   /**
-   * Método coordinador que gestiona la secuencia de inicialización de la conexión.
-   * @returns {Promise<boolean>} Retorna true si la inicialización es exitosa, de lo contrario, false.
-   */
-  async initializeConnection() {
-    try {
-      logger.info('[NetworkService] Iniciando proceso de inicialización de conexión...');
-      const baseURL = await getApiEndpoint();
-      this.baseUrl = baseURL;
-      logger.debug('[NetworkService] API_ENDPOINT establecido a:', this.baseUrl);
-
-      const phpHealthy = await checkPhpEndpointHealth();
-      if (!phpHealthy) {
-        logger.warn('[NetworkService] PHP_ENDPOINT no está saludable durante la inicialización.');
-      }
-
-      const backendConnected = await checkBackendConnection(this.baseUrl, this.endpoint, this._getRequestPayload.bind(this));
-      if (backendConnected === true) {
-        logger.info('[NetworkService] Inicialización de conexión completada con éxito.');
-        return true;
-      } else if (backendConnected === false) {
-        logger.warn('[NetworkService] Inicialización de conexión completada con fallos.');
-        return false;
-      } else {
-        logger.error('[NetworkService] Error durante la inicialización de conexión:', backendConnected.message);
-        return false;
-      }
-    } catch (error) {
-      logger.error('[NetworkService] Error durante la inicialización de conexión:', error.message);
-      return false;
-    }
-  }
-
-  /**
    * Inicializa la configuración del cliente HTTP.
    * @returns {Promise<Object>} Configuración para el cliente HTTP.
    */
   async initializeHttpClientConfig() {
     return await initializeHttpClientConfig();
+  }
+
+  /**
+   * Método coordinador que gestiona la secuencia de inicialización de la conexión.
+   * @returns {Promise<boolean>} Retorna true si la inicialización es exitosa, de lo contrario, false.
+   */
+  async initializeConnection() {
+    return await initializeConnection(this._getRequestPayload.bind(this));
   }
 }
 

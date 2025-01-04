@@ -1,7 +1,3 @@
-#### Tarea 6: Crear un módulo para la inicialización de la conexión
-- **Subtarea 6.1:** Crear un archivo `ConnectionInitializer.js` en `NetworkCheck`
-- **Subtarea 6.2:** Mover la función `initializeConnection` a `ConnectionInitializer.js`
-- **Subtarea 6.3:** Actualizar las importaciones en `index.js` para usar `ConnectionInitializer.js`
 
 #### Tarea 7: Refactorizar `NetworkService`  para usar los nuevos módulos
 - **Subtarea 7.1:** Actualizar el constructor de `NetworkService` para usar `UrlConfig.js`
