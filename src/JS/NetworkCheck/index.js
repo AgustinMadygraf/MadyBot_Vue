@@ -4,6 +4,7 @@ Path: src/JS/NetworkCheck/index.js
 
 import { getGlobalEndpoint } from './UrlConfig.js';
 import { checkBackendConnection } from './ConnectionChecker.js';
+import { checkPhpEndpointHealth } from './PhpHealthChecker.js';
 import AppConfig from '../../config';
 import logger from '../LogService';
 import axios from 'axios';
@@ -49,22 +50,6 @@ export class NetworkService {
   }
 
   /**
-   * Verifica la salud del endpoint PHP realizando una solicitud GET a la ruta /health-check.
-   * @returns {Promise<boolean>} Retorna true si el endpoint PHP está saludable, de lo contrario, false.
-   */
-  async checkPhpEndpointHealth() {
-    try {
-      logger.info('[NetworkService] Verificando salud de PHP_ENDPOINT...');
-      await axios.get(`${AppConfig.PHP_ENDPOINT}/health-check`);
-      logger.info('[NetworkService] PHP_ENDPOINT está saludable.');
-      return true;
-    } catch (error) {
-      logger.warn('[NetworkService] PHP_ENDPOINT no está saludable:', error.message);
-      return false;
-    }
-  }
-
-  /**
    * Obtiene el API_ENDPOINT desde la configuración o, en caso de fallo, desde el backend PHP.
    * @returns {Promise<string>} Retorna el API_ENDPOINT válido.
    * @throws {Error} Lanza un error si no se puede obtener un API_ENDPOINT válido.
@@ -78,7 +63,7 @@ export class NetworkService {
     } catch (error) {
       logger.warn('[NetworkService] Fallback: Obteniendo API_ENDPOINT desde PHP...');
       try {
-        const isPhpHealthy = await this.checkPhpEndpointHealth();
+        const isPhpHealthy = await checkPhpEndpointHealth();
         if (!isPhpHealthy) {
           throw new Error('PHP_ENDPOINT no está saludable');
         }
@@ -125,7 +110,7 @@ export class NetworkService {
       this.baseUrl = baseURL;
       logger.debug('[NetworkService] API_ENDPOINT establecido a:', this.baseUrl);
 
-      const phpHealthy = await this.checkPhpEndpointHealth();
+      const phpHealthy = await checkPhpEndpointHealth();
       if (!phpHealthy) {
         logger.warn('[NetworkService] PHP_ENDPOINT no está saludable durante la inicialización.');
       }
