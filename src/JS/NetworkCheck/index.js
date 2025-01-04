@@ -3,7 +3,7 @@ Path: src/JS/NetworkCheck/index.js
 
 */
 
-import { getGlobalEndpoint, setGlobalEndpoint } from '../../config/HttpClientConfig.js';
+import { getGlobalEndpoint, setGlobalEndpoint } from './UrlConfig.js';
 import MessageService from '../ChatBot/MessageService';
 import AppConfig from '../../config';
 import logger from '../LogService';
